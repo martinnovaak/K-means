@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     VoronoiDiagramGenerator.cpp \
+    bod.cpp \
     kmean.cpp \
     main.cpp \
     mainwindow.cpp \
