@@ -1,21 +1,21 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QVector>
 #include <QRandomGenerator>
 #include "VoronoiDiagramGenerator.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow),sizeOfItem(10), width(719-sizeOfItem/2), height(469-sizeOfItem/2), numberOfPoints(50), numberOfCentroids(5)
+    , ui(new Ui::MainWindow),velikostBodu(10), sirkaPlatna(719-velikostBodu/2), vyskaPlatna(469-velikostBodu/2), pocetBodu(50), pocetCentroidu(5)
 {
     ui->setupUi(this);
 
-    scene = new QGraphicsScene(this);
-    ui->graphicsView->setScene(scene);
-    scene->setSceneRect(0,0,width,height);
-    generate(true);
-    generate(false);
+    scena = new QGraphicsScene(this);
+    ui->graphicsView->setScene(scena);
+    scena->setSceneRect(0,0,sirkaPlatna,vyskaPlatna);
+    vygeneruj(true);
+    vygeneruj(false);
 
+    //napojeni signalu z tlacitek na sloty
     connect(ui->solveButton, &QPushButton::clicked, this, &MainWindow::solve);
     connect(ui->pointButton, &QPushButton::clicked, this, &MainWindow::generatePoints);
     connect(ui->centroidButton, &QPushButton::clicked, this, &MainWindow::generateCentroids);
@@ -24,22 +24,22 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
-    this->points.clear();
-    this->centroids.clear();
-    this->lines.clear();
-    this->voronoilines.clear();
+    this->body.clear();
+    this->centroidy.clear();
+    this->linky.clear();
+    this->hraniceVoronehoBunek.clear();
 }
 
-//vygeneruje nahodne body nebo centroidy na platno
-void MainWindow::generate(bool p)
+//funkce vygeneruje nahodne body nebo centroidy na platno
+void MainWindow::vygeneruj(bool p) //je-li p == true generuje body jinak centroidy
 {
     double w,h;
     QRandomGenerator g;
 
-    std::uniform_real_distribution<double> x(0,width-sizeOfItem/2);
-    std::uniform_real_distribution<double> y(0,height-sizeOfItem/2);
+    std::uniform_real_distribution<double> x(0,sirkaPlatna-velikostBodu/2);
+    std::uniform_real_distribution<double> y(0,vyskaPlatna-velikostBodu/2);
 
-    unsigned int number = (p == true) ? numberOfPoints : numberOfCentroids;
+    unsigned int number = (p == true) ? pocetBodu : pocetCentroidu;
 
     for (unsigned int i = 0; i < number; i++ )
     {
@@ -49,96 +49,94 @@ void MainWindow::generate(bool p)
         if (p)
         {
             el = new myitem(w, h, 10, Qt::darkYellow);
-            points.push_back(el);
+            body.push_back(el);
         }
         else
         {
             el = new myitem(w, h, 10, Qt::red);
-            centroids.push_back(el);
+            centroidy.push_back(el);
         }
-
-        scene->addItem(el);
+        scena->addItem(el);
     }
 }
 
 //smaze body a centroidy ze sceny
-void MainWindow::clearScene(bool p)
+void MainWindow::smazBody(bool p)
 {
     if (p)
     {
-        for (int i = 0; i < points.length(); i++)
+        for (int i = 0; i < body.length(); i++)
         {
-            scene->removeItem(points[i]);
+            scena->removeItem(body[i]);
         }
-        points.clear();
+        body.clear();
     }
     else
     {
-        for (int i = 0; i < centroids.length(); i++)
+        for (int i = 0; i < centroidy.length(); i++)
         {
-            scene->removeItem(centroids[i]);
+            scena->removeItem(centroidy[i]);
         }
-        centroids.clear();
+        centroidy.clear();
     }
 }
 
 //samze linky ze sceny
-void MainWindow::removeLines()
+void MainWindow::smazLinky()
 {
-    for(int i = 0; i < lines.length(); i++)
-        this->scene->removeItem(lines[i]);
-    for(int i = 0; i < voronoilines.length(); i++)
-        this->scene->removeItem(voronoilines[i]);
-    lines.clear();
-    voronoilines.clear();
+    for(int i = 0; i < linky.length(); i++)
+        this->scena->removeItem(linky[i]);
+    for(int i = 0; i < hraniceVoronehoBunek.length(); i++)
+        this->scena->removeItem(hraniceVoronehoBunek[i]);
+    linky.clear();
+    hraniceVoronehoBunek.clear();
 }
 
 //vypocita linky voroneho diagramu
 //pouzit fortuneho algoritmus ze stranky: https://web.archive.org/web/20131207065132/http://www.skynet.ie/~sos/mapviewer/voronoi.php
 void MainWindow::voronoi()
 {
-    int c = this->centroids.length();
+    int c = this->centroidy.length();
     float * x = new float[c];
     float * y = new float[c];
     for (int i = 0; i < c; i++)
     {
-        x[i] = (float)centroids[i]->getX();
-        y[i] = (float)centroids[i]->getY();
+        x[i] = (float)centroidy[i]->getX();
+        y[i] = (float)centroidy[i]->getY();
     }
 
     VoronoiDiagramGenerator vdg;
-    vdg.generateVoronoi(x,y,c, 0, width,0,height,sizeOfItem/2);
-
+    vdg.generateVoronoi(x,y,c, 0, sirkaPlatna,0,vyskaPlatna,velikostBodu/2);
     vdg.resetIterator();
-
     float x1,y1,x2,y2;
     while(vdg.getNext(x1,y1,x2,y2))
     {
-        x1 = (x1 < 0.01) ? 0 : x1 + sizeOfItem/2;
-        y1 = (y1 < 0.01) ? 0 : y1 + sizeOfItem/2;
-        QGraphicsLineItem *line = scene->addLine(QLineF(x1,y1,x2+sizeOfItem/2,y2+sizeOfItem/2), QPen(Qt::blue, 2));
-        voronoilines.push_back(line);
+        x1 = (x1 < 0.01) ? 0 : x1 + velikostBodu/2;
+        y1 = (y1 < 0.01) ? 0 : y1 + velikostBodu/2;
+        QGraphicsLineItem *line = scena->addLine(QLineF(x1,y1,x2+velikostBodu/2,y2+velikostBodu/2), QPen(Qt::blue, 2));
+        hraniceVoronehoBunek.push_back(line);
     }
     delete[] x;
     delete[] y;
 }
 
-void MainWindow::addPointsToVector(std::vector<Centroid> &centroidy, std::vector<Bod> &body)
+//predela body z myitem* na bod resp. centroid
+void MainWindow::ulozBodyDoVektoru(QVector<Centroid> &c, QVector<Bod> &b)
 {
     double * point;
     point = new double[2];
-    for (int i = 0; i < points.length(); i++)
+    for (int i = 0; i < body.length(); i++)
     {
-        point[0] = points[i]->getX();
-        point[1] = points[i]->getY();
-        body.push_back(Bod(point, 2));
+        point[0] = body[i]->getX();
+        point[1] = body[i]->getY();
+        b.push_back(Bod(point, 2));
     }
-    for (int i = 0; i < centroids.length(); i++)
+    for (int i = 0; i < centroidy.length(); i++)
     {
-        scene->removeItem(centroids[i]);
-        point[0] = centroids[i]->getX();
-        point[1] = centroids[i]->getY();
-        centroidy.push_back(Centroid(point, 2));
+        scena->removeItem(centroidy[i]);
+        point[0] = centroidy[i]->getX();
+        point[1] = centroidy[i]->getY();
+        c.push_back(Centroid(point, 2));
     }
     delete[] point;
 }
@@ -146,52 +144,52 @@ void MainWindow::addPointsToVector(std::vector<Centroid> &centroidy, std::vector
 //vygeneruje nove body (nejprve smaze ty stare a vygeneruje nove)
 void MainWindow::generatePoints()
 {
-    clearScene(true);
-    this->numberOfPoints = ui->spinBox->value();
-    generate(true);
-    removeLines();
+    smazBody(true);
+    this->pocetBodu = ui->spinBox->value();
+    vygeneruj(true);
+    smazLinky();
 }
 
 //vygeneruje nove centroidy (nejprve smaze ty stare a vygeneruje nove)
 void MainWindow::generateCentroids()
 {
-    clearScene(false);
-    this->numberOfCentroids = ui->spinBox_2->value();
-    generate(false);
-    removeLines();
+    smazBody(false);
+    this->pocetCentroidu = ui->spinBox_2->value();
+    vygeneruj(false);
+    smazLinky();
 }
 
 void MainWindow::solve()
 {
     //odstrani stare linky mezi body a linky voroneho diagramu
-    removeLines();
+    smazLinky();
 
     //parametry pro inicializaci tridy kmean
-    std::vector<Centroid> centroidy;
-    std::vector<Bod> body;
-    addPointsToVector(centroidy, body);
-    centroids.clear();
+    QVector<Centroid> c;
+    QVector<Bod> b;
+    ulozBodyDoVektoru(c, b);
+    centroidy.clear();
 
-    KMean kmin(centroidy, body, numberOfCentroids, numberOfPoints, 2);
+    KMean kmin(c, b, pocetCentroidu, pocetBodu, 2);
     kmin.vyres();
 
-    for (unsigned int i = 0; i < numberOfCentroids; i++)
+    for (unsigned int i = 0; i < pocetCentroidu; i++)
     {
         //nové centroidy
-        myitem * el = new myitem(kmin(i,0), kmin(i,1), sizeOfItem, Qt::red);
-        centroids.push_back(el);
+        myitem * el = new myitem(kmin(i,0), kmin(i,1), velikostBodu, Qt::red);
+        centroidy.push_back(el);
         //nalezne body v aktuálním shluku
         for(unsigned int j = 0; j < kmin[i].pocet; j++)
         {
             unsigned int bod = kmin[i].bodyVeShluku[j]; // index bodu ve shluku
-            QGraphicsLineItem *line = scene->addLine(QLineF(el->getCenterX(),el->getCenterY(),points[bod]->getCenterX(),points[bod]->getCenterY()));
-            lines.push_back(line);
+            QGraphicsLineItem *line = scena->addLine(QLineF(el->getCenterX(),el->getCenterY(),body[bod]->getCenterX(),body[bod]->getCenterY()));
+            linky.push_back(line);
             //spojení linky s krajními body (centroidem a bodem)
-            this->points[bod]->addLine(line, false);
-            this->centroids[i]->addLine(line, true);
+            this->body[bod]->addLine(line, false);
+            this->centroidy[i]->addLine(line, true);
         }
         //vlození centroidu na plátno
-        scene->addItem(centroids[i]);
+        scena->addItem(centroidy[i]);
     }
     voronoi();
 }

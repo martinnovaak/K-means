@@ -2,16 +2,13 @@
 #define KMEAN_H
 
 #include "bod.h"
-#include <vector>
-#include "myitem.h"
-#include <QVector>
 using namespace std;
 
 class KMean
 {
 private:
-    vector<Centroid> centroidy;
-    vector<Bod> body;
+    QVector<Centroid> centroidy;
+    QVector<Bod> body;
 
     unsigned int pocetCentroidu;
     unsigned int pocetBodu;
@@ -24,7 +21,7 @@ private:
     void vynuluj();
     bool vypoctiNoveCentroidy();
 public:
-    KMean(vector<Centroid> centroidy, vector<Bod> body, unsigned int pocetcentroidu, unsigned int pocetbodu, unsigned int dimenze);
+    KMean(QVector<Centroid>& centroidy, QVector<Bod>& body, unsigned int pocetcentroidu, unsigned int pocetbodu, unsigned int dimenze);
     void vyres();
     double operator()(unsigned int i, unsigned int j);
     const Centroid & operator[](unsigned int i);

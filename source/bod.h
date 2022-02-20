@@ -1,116 +1,40 @@
 #ifndef BOD_H
 #define BOD_H
 
-#include <vector>
+#include <QVector>
 
+//Bod v n-te dimenzi obsahuje n souradnic
 class Bod
 {
 protected:
-    double * souradnice;
-    unsigned int dim;
+    double * souradnice; // souradnice bodu
+    unsigned int dim;    // dimenze
 public:
-    Bod(double * bod, unsigned int dim)
-    {
-        this->dim = dim;
-        souradnice = new double[dim];
-        for(unsigned int i = 0; i < dim; i++)
-        {
-            souradnice[i] = bod[i];
-        }
-    }
-
-    Bod(const Bod& b) : dim(b.dim)
-    {
-        souradnice = new double[dim];
-        for (unsigned int i = 0; i < dim; i++)
-            souradnice[i] = b[i];
-    }
-
-    ~Bod()
-    {
-        delete[] souradnice;
-    }
-
-    double operator[](unsigned int i) const
-    {
-        if(i < dim)
-            return souradnice[i];
-        else
-            return -1;
-    }
+    Bod(double * bod, unsigned int dim);    //konstruktor
+    Bod(const Bod& b);                      //kopirovaci konstruktor
+    ~Bod();                                 //destruktor
+    double operator[](unsigned int i) const;//pretizeny operator[] vraci i-tou souradnici
 };
 
+//Centroid je specialni pripad bodu - ma take n-souradnic
+//navic ale taky obsahuje vlastni shluk
 class Centroid : public Bod
 {
 private:
-    unsigned int pocet;
-    std::vector<unsigned int> bodyVeShluku;
-    std::vector<double> novysouradnice;
-
+    unsigned int pocet;                     //pocet bodu ve shluku
+    QVector<unsigned int> bodyVeShluku;     //body ve shluku (vektor obsahuje pouze indexy jednotlivych bodu)
+    QVector<double> novysouradnice;         //souradnice centroidu v nove iteraci (v zakladu funguje jako soucet bodu, ktere se pridavaji
+                                            //funkci pridejDoShluku, po zavolani funkce novyCentroid se vydeli poctem bodu ve skluku)
     friend class MainWindow;
 public:
-    Centroid(double * bod, unsigned int dim) : Bod(bod, dim)
-    {
-        this->pocet = 0;
-        for(unsigned int i = 0; i < this->dim; i++)
-            novysouradnice.push_back(0.0);
-    }
+    Centroid(double * bod, unsigned int dim);//konstruktor
+    Centroid(const Centroid & c);           //kopirovaci konstruktor
+    ~Centroid();                            //destruktor
+    double operator[](unsigned int i) const;//pretizeny operator[] vraci i-tou souradnici
 
-    Centroid(const Centroid & c) : Bod(c.souradnice, c.dim), pocet(c.pocet)
-    {
-        for (unsigned int i = 0; i < this->pocet; i++)
-            bodyVeShluku.push_back(c[i]);
-        for(unsigned int i = 0; i < this->dim; i++)
-            novysouradnice.push_back(0.0);
-    }
-
-    ~Centroid()
-    {
-        vycistiShluk();
-        //delete[] souradnice;
-    }
-
-    double operator[](unsigned int i) const
-    {
-        if(i < dim)
-            return souradnice[i];
-        else
-            return -1;
-    }
-
-    void pridejDoShluku(unsigned int index, Bod & bod)
-    {
-        bodyVeShluku.push_back(index);
-        for (unsigned int i = 0; i < this->dim; i++)
-            this->novysouradnice[i] += bod[i];
-        this->pocet++;
-    }
-
-    void vycistiShluk()
-    {
-        for (unsigned int i = 0; i < this->pocet; i++)
-            bodyVeShluku.pop_back();
-        for (unsigned int i = 0; i < this->dim; i++)
-            novysouradnice[i] = 0.0;
-        pocet = 0;
-
-    }
-
-    bool novyCentroid()
-    {
-        if(pocet == 0)
-            return true;
-        bool stejny = true;
-        for (unsigned int  i = 0; i < this->dim; i++)
-        {
-            this->novysouradnice[i] /= this->pocet;
-            if (this->novysouradnice[i] != this->souradnice[i])
-                stejny = false;
-            if(!stejny)
-                this->souradnice[i] = novysouradnice[i];
-        }
-        return stejny;
-    }
+    void pridejDoShluku(unsigned int index, const Bod & bod);//funkce ktera prida bod do shluku
+    void vycistiShluk();                    //funkce na vycisteni shluku
+    bool novyCentroid();                    //funkce na overeni zda-li jsou nove souradnice odlisne od tech starych
 };
 
 #endif // BOD_H
