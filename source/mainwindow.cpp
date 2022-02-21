@@ -149,6 +149,7 @@ void MainWindow::ulozBodyDoVektoru(QVector<Centroid> &c, QVector<Bod> &b)
         point[0] = body[i]->getX();
         point[1] = body[i]->getY();
         b.push_back(Bod(point, 2));
+        body[i]->deleteLines();
     }
     for (int i = 0; i < centroidy.length(); i++)
     {
@@ -156,7 +157,10 @@ void MainWindow::ulozBodyDoVektoru(QVector<Centroid> &c, QVector<Bod> &b)
         point[0] = centroidy[i]->getX();
         point[1] = centroidy[i]->getY();
         c.push_back(Centroid(point, 2));
+        centroidy[i]->deleteLines();
     }
+    for (int i = 0; i < centroidy.length(); i++)
+        delete centroidy.takeAt(i);
     delete[] point;
 }
 
@@ -180,14 +184,14 @@ void MainWindow::vygenerujCentroidy()
 
 void MainWindow::vyres()
 {
-    //odstrani stare linky mezi body a linky voroneho diagramu
-    smazLinky();
-
     //parametry pro inicializaci tridy kmean
     QVector<Centroid> c;
     QVector<Bod> b;
     ulozBodyDoVektoru(c, b);
     centroidy.clear();
+
+    //odstrani stare linky mezi body a linky voroneho diagramu
+    smazLinky();
 
     KMean kmin(c, b, pocetCentroidu, pocetBodu, 2);
     kmin.vyres();

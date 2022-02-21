@@ -35,6 +35,7 @@ protected:
 //metody zabyvajici posouvanim linky soucasne s bodem
 public:
     void addLine(QGraphicsLineItem *line, bool centroid); // metoda na spojeni linky s itemem
+    void deleteLines();
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override; //overridnuta metoda zachytavajici zmenu polohy itemu
 private:

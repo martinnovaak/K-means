@@ -66,3 +66,8 @@ void myitem::moveLineToCenter()
          lines[i]->setLine(QLineF(p1, p2));                         // nastav linku na (p1,p2)
      }
 }
+
+void myitem::deleteLines()
+{
+    lines.clear();
+}
