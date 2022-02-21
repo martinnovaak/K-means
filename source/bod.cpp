@@ -1,6 +1,6 @@
 #include "bod.h"
 
-Bod::Bod(double *bod, unsigned int dim)
+Bod::Bod(const double *bod, unsigned int dim)
 {
     this->dim = dim;
     souradnice = new double[dim];
@@ -30,7 +30,7 @@ double Bod::operator[](unsigned int i) const
         return -1;
 }
 
-Centroid::Centroid(double *bod, unsigned int dim) : Bod(bod, dim)
+Centroid::Centroid(const double *bod, unsigned int dim) : Bod(bod, dim)
 {
     this->pocet = 0;
     for(unsigned int i = 0; i < this->dim; i++)

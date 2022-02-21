@@ -18,9 +18,9 @@ public:
     ~MainWindow();
 private slots:
     //sloty po zmacknuti tlacitek
-    void generatePoints();    //slot na vygenerovani bodu
-    void generateCentroids(); //slot na vygenerovani centroidu
-    void solve();             //slot na vyreseni ulohy kmeans
+    void vygenerujBody();    //slot na vygenerovani bodu
+    void vygenerujCentroidy(); //slot na vygenerovani centroidu
+    void vyres();             //slot na vyreseni ulohy kmeans
 private:
     Ui::MainWindow *ui;
     QGraphicsScene * scena;     //platno

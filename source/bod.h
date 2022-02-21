@@ -10,7 +10,7 @@ protected:
     double * souradnice; // souradnice bodu
     unsigned int dim;    // dimenze
 public:
-    Bod(double * bod, unsigned int dim);    //konstruktor
+    Bod(const double * bod, unsigned int dim);    //konstruktor
     Bod(const Bod& b);                      //kopirovaci konstruktor
     ~Bod();                                 //destruktor
     double operator[](unsigned int i) const;//pretizeny operator[] vraci i-tou souradnici
@@ -27,7 +27,7 @@ private:
                                             //funkci pridejDoShluku, po zavolani funkce novyCentroid se vydeli poctem bodu ve skluku)
     friend class MainWindow;
 public:
-    Centroid(double * bod, unsigned int dim);//konstruktor
+    Centroid(const double * bod, unsigned int dim);//konstruktor
     Centroid(const Centroid & c);           //kopirovaci konstruktor
     ~Centroid();                            //destruktor
     double operator[](unsigned int i) const;//pretizeny operator[] vraci i-tou souradnici

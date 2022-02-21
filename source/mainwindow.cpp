@@ -16,9 +16,9 @@ MainWindow::MainWindow(QWidget *parent)
     vygeneruj(false);
 
     //napojeni signalu z tlacitek na sloty
-    connect(ui->solveButton, &QPushButton::clicked, this, &MainWindow::solve);
-    connect(ui->pointButton, &QPushButton::clicked, this, &MainWindow::generatePoints);
-    connect(ui->centroidButton, &QPushButton::clicked, this, &MainWindow::generateCentroids);
+    connect(ui->solveButton, &QPushButton::clicked, this, &MainWindow::vyres);
+    connect(ui->pointButton, &QPushButton::clicked, this, &MainWindow::vygenerujBody);
+    connect(ui->centroidButton, &QPushButton::clicked, this, &MainWindow::vygenerujCentroidy);
 }
 
 MainWindow::~MainWindow()
@@ -161,7 +161,7 @@ void MainWindow::ulozBodyDoVektoru(QVector<Centroid> &c, QVector<Bod> &b)
 }
 
 //vygeneruje nove body (nejprve smaze ty stare a vygeneruje nove)
-void MainWindow::generatePoints()
+void MainWindow::vygenerujBody()
 {
     smazBody(true);
     this->pocetBodu = ui->spinBox->value();
@@ -170,7 +170,7 @@ void MainWindow::generatePoints()
 }
 
 //vygeneruje nove centroidy (nejprve smaze ty stare a vygeneruje nove)
-void MainWindow::generateCentroids()
+void MainWindow::vygenerujCentroidy()
 {
     smazBody(false);
     this->pocetCentroidu = ui->spinBox_2->value();
@@ -178,7 +178,7 @@ void MainWindow::generateCentroids()
     smazLinky();
 }
 
-void MainWindow::solve()
+void MainWindow::vyres()
 {
     //odstrani stare linky mezi body a linky voroneho diagramu
     smazLinky();
