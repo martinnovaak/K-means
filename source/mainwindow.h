@@ -44,6 +44,8 @@ private:
 
     void voronoi();         //funkce na vykresleni hranic voroneho bunek
 
+    void uvolniPamet();
+
     void ulozBodyDoVektoru(QVector<Centroid> &centroidy, QVector<Bod> &body); //ulozi body do vektoru (predela QVector<myitem*> na QVector<Bod>)
 };
 #endif // MAINWINDOW_H

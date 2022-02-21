@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+    uvolniPamet();
     this->body.clear();
     this->centroidy.clear();
     this->linky.clear();
@@ -66,17 +67,17 @@ void MainWindow::smazBody(bool p)
     if (p)
     {
         for (int i = 0; i < body.length(); i++)
-        {
             scena->removeItem(body[i]);
-        }
+        for (int i = 0; i < body.length(); i++)
+            delete body.takeAt(i);
         body.clear();
     }
     else
     {
         for (int i = 0; i < centroidy.length(); i++)
-        {
             scena->removeItem(centroidy[i]);
-        }
+        for (int i = 0; i < centroidy.length(); i++)
+            delete centroidy.takeAt(i);
         centroidy.clear();
     }
 }
@@ -86,8 +87,12 @@ void MainWindow::smazLinky()
 {
     for(int i = 0; i < linky.length(); i++)
         this->scena->removeItem(linky[i]);
+    for(int i = 0; i < linky.length(); i++)
+        delete linky.takeAt(i);
     for(int i = 0; i < hraniceVoronehoBunek.length(); i++)
         this->scena->removeItem(hraniceVoronehoBunek[i]);
+    for(int i = 0; i < hraniceVoronehoBunek.length(); i++)
+        delete hraniceVoronehoBunek.takeAt(i);
     linky.clear();
     hraniceVoronehoBunek.clear();
 }
@@ -118,6 +123,20 @@ void MainWindow::voronoi()
     }
     delete[] x;
     delete[] y;
+}
+
+void MainWindow::uvolniPamet()
+{
+    for(int i = 0; i < body.size(); i++)
+        delete body.takeAt(i);
+    for(int i = 0; i < centroidy.size(); i++)
+        delete centroidy.takeAt(i);
+    for(int i = 0; i < linky.size(); i++)
+        delete linky.takeAt(i);
+    for(int i = 0; i < hraniceVoronehoBunek.size(); i++)
+        delete hraniceVoronehoBunek.takeAt(i);
+
+    delete scena;
 }
 
 //predela body z myitem* na bod resp. centroid
