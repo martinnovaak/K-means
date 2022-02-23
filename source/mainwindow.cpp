@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     , pocetBodu(50), pocetCentroidu(5)
 {
     ui->setupUi(this);
+    this->setFixedSize(804, 619);
 
     //zakaz aktualizovat
     this->povolitAktualizaci = false;
