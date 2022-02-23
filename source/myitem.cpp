@@ -16,6 +16,11 @@ myitem::myitem(double x, double y, double wh, Qt::GlobalColor color)
     setToolTip(QString::number(souradnice_x) + " " + QString::number(souradnice_y));
 }
 
+myitem::~myitem()
+{
+
+}
+
 //ctverec predstavujici item na platne
 QRectF myitem::boundingRect() const
 {
@@ -50,6 +55,8 @@ QVariant myitem::itemChange(GraphicsItemChange change, const QVariant &value)
           zy = souradnice_y + newPos.y();
           setToolTip(QString::number(zx) + " " + QString::number(zy)); //zmena tooltipu na novou pozici
           moveLineToCenter(); //presun linku na novy stred itemu
+
+          emit itemChanged();//zavolej signal
     }
     return QGraphicsItem::itemChange(change, value); //zavolej metodu predka
 }
@@ -76,6 +83,8 @@ void myitem::mouseReleaseEvent(QGraphicsSceneMouseEvent *)
         lines[i]->setPen(QPen(Qt::black));
     //2)nakresli znovu item
     this->update(); //po uvolneni uz se paint nevola, je treba zavolat rucne
+
+    emit itemReleased(); //zavolej signal
 }
 
 //linka je mezi dvema body (p1,p2) p1 je vzdy centroid a p2 je vzdy bod
