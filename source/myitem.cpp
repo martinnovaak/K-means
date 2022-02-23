@@ -8,7 +8,7 @@ myitem::myitem(double x, double y, double wh, Qt::GlobalColor color)
     zx = x;
     zy = y;
     this->wh = wh;
-    this->color = color;
+    this->color = this->pomColor = color;
 
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
@@ -22,7 +22,7 @@ QRectF myitem::boundingRect() const
     return QRectF(souradnice_x, souradnice_y, wh, wh);
 }
 
-void myitem::paint(QPainter *painter, [[maybe_unused]] const QStyleOptionGraphicsItem *option, [[maybe_unused]] QWidget *widget)
+void myitem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     QRectF rect = boundingRect();
     painter->setBrush(color);
@@ -52,6 +52,30 @@ QVariant myitem::itemChange(GraphicsItemChange change, const QVariant &value)
           moveLineToCenter(); //presun linku na novy stred itemu
     }
     return QGraphicsItem::itemChange(change, value); //zavolej metodu predka
+}
+
+//po stisknuti itemu se zmeni jeho barva na magentovou a jeho linky na cervenou
+void myitem::mousePressEvent(QGraphicsSceneMouseEvent *)
+{
+    //1) ulozi aktualni pozici
+    this->souradnice_x = zx;
+    this->souradnice_y = zy;
+    //2) zmeni barvy
+    this->color = Qt::magenta;
+    for(int i = 0; i < this->lines.size(); i++)
+        lines[i]->setPen(QPen(Qt::red));
+    //paint se zavola az pri tazeni - barva se tedy meni pouze pri tazeni itemy po scene
+}
+
+//po uvolneni itemu se barvy na zpet
+void myitem::mouseReleaseEvent(QGraphicsSceneMouseEvent *)
+{
+    //1) zmeni barvy
+    this->color = this->pomColor;
+    for(int i = 0; i < this->lines.size(); i++)
+        lines[i]->setPen(QPen(Qt::black));
+    //2)nakresli znovu item
+    this->update(); //po uvolneni uz se paint nevola, je treba zavolat rucne
 }
 
 //linka je mezi dvema body (p1,p2) p1 je vzdy centroid a p2 je vzdy bod

@@ -13,7 +13,8 @@ private:
     double zx;                           // x-ova souradnice po premisteni uzivatelem na jinou pozici
     double zy;                           // y-ova souradnice po premisteni uzivatelem na jinou pozici
     double wh;                           // strana ctverce (item ackoli se vykresluje jen kruh tak vystupuje jako ctverec)
-    Qt::GlobalColor color;               // barva kruhu
+    Qt::GlobalColor color;               // aktualni barva kruhu
+    Qt::GlobalColor pomColor;            // pomocná proměnná, ve ktere je ulozena hodnota barvy z konstruktoru
     QVector<QGraphicsLineItem *> lines;  // linky pripojene k itemu (centroid muze mit vice bod max 1)
     bool centroid;                       // boolean rikajici, jestli se jedna o centroid ci ne
 public:
@@ -38,6 +39,8 @@ public:
     void deleteLines();
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override; //overridnuta metoda zachytavajici zmenu polohy itemu
+    void mousePressEvent(QGraphicsSceneMouseEvent*) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent*) override;
 private:
     void moveLineToCenter();    //metoda na zmenu polohy linek
 };
