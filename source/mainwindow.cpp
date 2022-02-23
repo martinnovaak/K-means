@@ -6,7 +6,6 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QTextStream>
-#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -215,7 +214,7 @@ void MainWindow::vyres()
     //odstrani stare linky mezi body a linky voroneho diagramu
     smazLinky();
 
-    KMean kmin(c, b, pocetCentroidu, pocetBodu, 2);
+    KMean kmin(c, b, 2);
     kmin.vyres();
     for (unsigned int i = 0; i < pocetCentroidu; i++)
     {

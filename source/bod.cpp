@@ -71,7 +71,6 @@ void Centroid::vycistiShluk()
     for (unsigned int i = 0; i < this->dim; i++)
         novysouradnice[i] = 0.0;
     pocet = 0;
-
 }
 
 bool Centroid::novyCentroid()
