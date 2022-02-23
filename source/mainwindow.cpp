@@ -2,6 +2,11 @@
 #include "ui_mainwindow.h"
 #include <QRandomGenerator>
 #include "VoronoiDiagramGenerator.h"
+#include <QFile>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QTextStream>
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -31,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->radioButton, &QRadioButton::clicked, this, &MainWindow::nastavAktualizace);
     connect(ui->radioButton_2, &QRadioButton::clicked, this, &MainWindow::nastavAktualizace);
     connect(ui->radioButton_3, &QRadioButton::clicked, this, &MainWindow::nastavAktualizace);
+
+    connect(ui->akceNacist, &QAction::triggered, this, &MainWindow::nactiSoubor);
 }
 
 MainWindow::~MainWindow()
@@ -71,14 +78,14 @@ void MainWindow::vygeneruj(bool p) //je-li p == true generuje body jinak centroi
         myitem * el ;
         if (p)
         {
-            el = new myitem(w, h, 10, Qt::darkYellow);
+            el = new myitem(w, h, velikostBodu, Qt::darkYellow);
             body.push_back(el);
             connect(this->body[i], &myitem::itemReleased, this, [this]{aktualizuj(true);});
             connect(this->body[i], &myitem::itemChanged, this, [this]{aktualizuj(false);});
         }
         else
         {
-            el = new myitem(w, h, 10, Qt::red);
+            el = new myitem(w, h, velikostBodu, Qt::red);
             centroidy.push_back(el);
         }
         scena->addItem(el);
@@ -256,4 +263,60 @@ void MainWindow::nastavAktualizace()
     //je-li povoleno aktualizovat -> zaktualizuj
     if(rezimAktualizace && povolitAktualizaci)
         vyres();
+}
+
+void MainWindow::nactiSoubor()
+{
+    QString cestaSouboru;
+    QString nazevSouboru = QFileDialog::getOpenFileName(this, "Otevři soubor", cestaSouboru, "Textový soubor (*.txt)");
+    QFileInfo i(nazevSouboru);
+    if(nazevSouboru.isEmpty())
+        return;
+
+    QFile soubor(i.absoluteFilePath());
+    if(!soubor.open(QIODevice::ReadOnly)) {
+        QMessageBox::information(0, "error", soubor.errorString());
+    }
+
+    smazBody(true);
+
+    QTextStream in(&soubor);
+
+    unsigned int index = 0;
+    while(!in.atEnd())
+    {
+        QString line = in.readLine();
+        line.remove(' ');
+        line.remove('(');
+        line.remove(')');
+        QStringList fields = line.split(",");
+        if(fields.size() == 2)
+        {
+            double x = abs(fields[0].toDouble()); //uprava tak aby se jednalo o kladne cislo
+            double y = abs(fields[1].toDouble());
+            while(x > sirkaPlatna) x -= sirkaPlatna; //aby bylo v platne
+            while(y > vyskaPlatna) y -= vyskaPlatna;
+            if(x < this->velikostBodu)  //a aby nebylo moc male
+            {
+                x *= sirkaPlatna;
+                x /= velikostBodu;
+            }
+            if(y < this->velikostBodu)
+            {
+                y /= 10;
+                y *= vyskaPlatna;
+            }
+            myitem * el ;
+            el = new myitem(x, y , velikostBodu, Qt::darkYellow);
+            body.push_back(el);
+            connect(this->body[index], &myitem::itemReleased, this, [this]{aktualizuj(true);});
+            connect(this->body[index], &myitem::itemChanged, this, [this]{aktualizuj(false);});
+            scena->addItem(el);
+            index++;
+        }
+        this->pocetBodu = index;
+        ui->spinBox->setValue(index);
+    }
+
+    soubor.close();
 }

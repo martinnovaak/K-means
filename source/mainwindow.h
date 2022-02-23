@@ -23,6 +23,7 @@ private slots:
     void vyres();             //slot na vyreseni ulohy kmeans
     void aktualizuj(bool itemreleased); //slot reagujici na signaly z myitemu
     void nastavAktualizace();   //slot reagujici na signaly z radiobuttonu
+    void nactiSoubor();
 private:
     Ui::MainWindow *ui;
     QGraphicsScene * scena;     //platno

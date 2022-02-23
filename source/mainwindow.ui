@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>764</width>
+    <width>804</width>
     <height>594</height>
    </rect>
   </property>
@@ -28,7 +28,7 @@
      <rect>
       <x>20</x>
       <y>21</y>
-      <width>728</width>
+      <width>761</width>
       <height>511</height>
      </rect>
     </property>
@@ -123,7 +123,7 @@
      <rect>
       <x>20</x>
       <y>540</y>
-      <width>718</width>
+      <width>761</width>
       <height>26</height>
      </rect>
     </property>
@@ -156,6 +156,28 @@
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>804</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuna_st_data">
+    <property name="title">
+     <string>Nastavení</string>
+    </property>
+    <addaction name="akceNacist"/>
+   </widget>
+   <addaction name="menuna_st_data"/>
+  </widget>
+  <action name="akceNacist">
+   <property name="text">
+    <string>načíst data</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
