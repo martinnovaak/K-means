@@ -20,7 +20,6 @@ private:
     bool centroid;                       // boolean rikajici, jestli se jedna o centroid ci ne
 public:
     myitem(double x, double y, double wh, Qt::GlobalColor color);   // konstruktor
-    virtual ~myitem();
     //gettery a settery
     double getX(){return zx;};            // getter na x-ovou souradnici leveho horniho rohu itemu
     double getY(){return zy;};            // getter na y-ovou souradnici leveho horniho rohu itemu

@@ -1,4 +1,5 @@
 #include "bod.h"
+#include <QMessageBox>
 
 Bod::Bod(const double *bod, unsigned int dim)
 {
@@ -24,10 +25,7 @@ Bod::~Bod()
 
 double Bod::operator[](unsigned int i) const
 {
-    if(i < dim)
-        return souradnice[i];
-    else
-        return -1;
+    return souradnice[i];
 }
 
 Centroid::Centroid(const double *bod, unsigned int dim) : Bod(bod, dim)

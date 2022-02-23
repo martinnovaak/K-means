@@ -20,7 +20,9 @@ private:
     double vzdalenost(const Bod & a, const Bod & b);
     void vynuluj();
     bool vypoctiNoveCentroidy();
+    void ulozPozici();
 public:
+    //KMean(QVector<Centroid>& centroidy, QVector<Bod>& body, unsigned int pocetcentroidu, unsigned int pocetbodu, unsigned int dimenze);
     KMean(QVector<Centroid>& centroidy, QVector<Bod>& body, unsigned int pocetcentroidu, unsigned int pocetbodu, unsigned int dimenze);
     void vyres();
     double operator()(unsigned int i, unsigned int j);

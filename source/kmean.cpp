@@ -61,7 +61,7 @@ void KMean::vynuluj()
         centroidy[i].vycistiShluk();
 }
 
-//vypocte novou iteraci, pokud jsou nove souradnice vsech centroidu stejna -> vrati false jinak vrati true
+//vypocte novou iteraci, pokud jsou nove souradnice vsech centroidu stejne -> vrati false jinak vrati true
 bool KMean::vypoctiNoveCentroidy()
 {
     bool pokracuj = false;

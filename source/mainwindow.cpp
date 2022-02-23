@@ -5,7 +5,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow),velikostBodu(10), sirkaPlatna(719-velikostBodu/2), vyskaPlatna(469-velikostBodu/2)
+    , ui(new Ui::MainWindow),velikostBodu(10), sirkaPlatna(759-velikostBodu/2), vyskaPlatna(469-velikostBodu/2)
     , pocetBodu(50), pocetCentroidu(5)
 {
     ui->setupUi(this);
@@ -14,9 +14,11 @@ MainWindow::MainWindow(QWidget *parent)
     this->povolitAktualizaci = false;
     this->rezimAktualizace = 0;
 
+    //vytvor scenu
     scena = new QGraphicsScene(this);
     ui->graphicsView->setScene(scena);
     scena->setSceneRect(0,0,sirkaPlatna,vyskaPlatna);
+    //vygeneruj body a centroidy
     vygeneruj(true);
     vygeneruj(false);
 
@@ -207,7 +209,6 @@ void MainWindow::vyres()
 
     KMean kmin(c, b, pocetCentroidu, pocetBodu, 2);
     kmin.vyres();
-
     for (unsigned int i = 0; i < pocetCentroidu; i++)
     {
         //nové centroidy
@@ -227,6 +228,7 @@ void MainWindow::vyres()
         //vlození centroidu na plátno
         scena->addItem(centroidy[i]);
     }
+
     voronoi();
 }
 

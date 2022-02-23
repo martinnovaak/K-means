@@ -16,11 +16,6 @@ myitem::myitem(double x, double y, double wh, Qt::GlobalColor color)
     setToolTip(QString::number(souradnice_x) + " " + QString::number(souradnice_y));
 }
 
-myitem::~myitem()
-{
-
-}
-
 //ctverec predstavujici item na platne
 QRectF myitem::boundingRect() const
 {
