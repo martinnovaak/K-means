@@ -11,6 +11,7 @@ CONFIG += c++11
 SOURCES += \
     VoronoiDiagramGenerator.cpp \
     bod.cpp \
+    centroid.cpp \
     kmean.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -19,6 +20,7 @@ SOURCES += \
 HEADERS += \
     VoronoiDiagramGenerator.h \
     bod.h \
+    centroid.h \
     kmean.h \
     mainwindow.h \
     myitem.h

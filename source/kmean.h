@@ -1,7 +1,7 @@
 #ifndef KMEAN_H
 #define KMEAN_H
 
-#include "bod.h"
+#include "centroid.h"
 using namespace std;
 
 class KMean
