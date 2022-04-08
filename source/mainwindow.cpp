@@ -47,9 +47,9 @@ MainWindow::~MainWindow()
     for(int i = 0; i < body.size(); i++)
         delete body.takeAt(i);
     for(int i = 0; i < centroidy.size(); i++)
-        delete centroidy.takeAt(i);
+       delete centroidy.takeAt(i);
     for(int i = 0; i < linky.size(); i++)
-        delete linky.takeAt(i);
+       delete linky.takeAt(i);
     for(int i = 0; i < hraniceVoronehoBunek.size(); i++)
         delete hraniceVoronehoBunek.takeAt(i);
     delete scena;
@@ -97,18 +97,20 @@ void MainWindow::smazBody(bool p)
 {
     if (p)
     {
-        for (int i = 0; i < body.length(); i++)
-            scena->removeItem(body[i]);
-        for (int i = 0; i < body.length(); i++)
-            delete body.takeAt(i);
+        for(myitem * bod : qAsConst(body))
+        {
+            scena->removeItem(bod);
+            delete bod;
+        }
         body.clear();
     }
     else
     {
-        for (int i = 0; i < centroidy.length(); i++)
-            scena->removeItem(centroidy[i]);
-        for (int i = 0; i < centroidy.length(); i++)
-            delete centroidy.takeAt(i);
+        for(myitem * centroid : qAsConst(centroidy))
+        {
+            scena->removeItem(centroid);
+            delete centroid;
+        }
         centroidy.clear();
     }
 }
@@ -116,14 +118,16 @@ void MainWindow::smazBody(bool p)
 //samze linky ze sceny
 void MainWindow::smazLinky()
 {
-    for(int i = 0; i < linky.length(); i++)
-        this->scena->removeItem(linky[i]);
-    for(int i = 0; i < linky.length(); i++)
-        delete linky.takeAt(i);
-    for(int i = 0; i < hraniceVoronehoBunek.length(); i++)
-        this->scena->removeItem(hraniceVoronehoBunek[i]);
-    for(int i = 0; i < hraniceVoronehoBunek.length(); i++)
-        delete hraniceVoronehoBunek.takeAt(i);
+    for(QGraphicsLineItem * linka : qAsConst(linky))
+    {
+        scena->removeItem(linka);
+        delete linka;
+    }
+    for (QGraphicsLineItem * hranice : qAsConst(hraniceVoronehoBunek))
+    {
+        scena->removeItem(hranice);
+        delete hranice;
+    }
     linky.clear();
     hraniceVoronehoBunek.clear();
 }
@@ -161,23 +165,25 @@ void MainWindow::ulozBodyDoVektoru(QVector<Centroid> &c, QVector<Bod> &b)
 {
     double * point;
     point = new double[2];
-    for (int i = 0; i < body.length(); i++)
+    for (myitem * bod : qAsConst(body))
     {
-        point[0] = body[i]->getX();
-        point[1] = body[i]->getY();
+        point[0] = bod->getX();
+        point[1] = bod->getY();
         b.push_back(Bod(point, 2));
-        body[i]->deleteLines();
+        bod->deleteLines();
     }
-    for (int i = 0; i < centroidy.length(); i++)
+    for (myitem * centroid : qAsConst(centroidy))
     {
-        scena->removeItem(centroidy[i]);
-        point[0] = centroidy[i]->getX();
-        point[1] = centroidy[i]->getY();
+        scena->removeItem(centroid);
+        point[0] = centroid->getX();
+        point[1] = centroid->getY();
         c.push_back(Centroid(point, 2));
-        centroidy[i]->deleteLines();
+        centroid->deleteLines();
     }
-    for (int i = 0; i < centroidy.length(); i++)
-        delete centroidy.takeAt(i);
+    //for (int i = 0; i < centroidy.length(); i++)
+    //    delete centroidy.takeAt(i);
+    for (myitem * centroid : qAsConst(centroidy)) delete centroid;
+
     delete[] point;
 }
 
@@ -189,6 +195,7 @@ void MainWindow::vygenerujBody()
     this->pocetBodu = ui->spinBox->value();
     vygeneruj(true);
     smazLinky();
+    this->scena->update();
 }
 
 //vygeneruje nove centroidy (nejprve smaze ty stare a vygeneruje nove)
@@ -199,6 +206,7 @@ void MainWindow::vygenerujCentroidy()
     this->pocetCentroidu = ui->spinBox_2->value();
     vygeneruj(false);
     smazLinky();
+    this->scena->update();
 }
 
 void MainWindow::vyres()
@@ -237,6 +245,7 @@ void MainWindow::vyres()
     }
 
     voronoi();
+    this->scena->update();
 }
 
 // slot na aktualizace je volan po emitnuti signalu z itemu
