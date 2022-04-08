@@ -21,3 +21,30 @@ Celá úloha Shlukování metodou nejbližšícch středů se dá vypočítat a 
 Na nejnižším řádku aplikace se nacházejí 3 radiobuttony. Na nich si může uživatel navolit zda-li chce volat výpočet metody při puštění bodu či jeho přesouvání. Příslušné linky daného bodu při jeho přesouvání mění barvu na červenou. Po jejich puštění zpět na černou.
 
 V levém horním rohu aplikace se nachází menubar s akcí pro načtení bodů ze souboru formátu .txt. Data by měly být zapsány podobně jako v souboru testdata.txt.
+
+## Spuštění
+## Spuštění na Windows
+Ve složce program se nachází spustitelný .exe soubor.
+### Spuštění na linuxových distribucích založených na debianu
+#### Potřebné balíčky
+`sudo apt install git`
+`sudo apt install g++`
+`sudo apt install qt5-default`
+`sudo apt install make`
+
+#### Naklonování projektu
+`git clone https://github.com/martinnovaak/K-means`
+`cd K-means`
+`rm -r program` 
+`cd source`
+
+`qmake Plot.pro`
+`make`
+`./Plot`
+
+## Oprava chyb
+### Defaultní konstruktor
+Do tříd Centroid a Bod byl přidán prázdný defaultní konstruktor pro kompatibilitu se staršími verzemi Qt. Před verzí Qt 5.13 vyžadovaly třídy kontejnerů v Qt po objektech defaultní konstruktory viz [Qt dokumentace](https://doc.qt.io/archives/qt-5.12/containers.html#the-container-classes). 
+
+### Bílé "šmouhy"
+Ve verzi Qt6 vznikali při vykreslování bílé horizontální šmouhy, kde se nevykreslovaly body ani Voroneho linky. Vyřešeno aktualizací plátna po každém vykreslení.
