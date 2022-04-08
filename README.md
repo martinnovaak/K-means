@@ -27,20 +27,21 @@ V levém horním rohu aplikace se nachází menubar s akcí pro načtení bodů 
 Ve složce program se nachází spustitelný .exe soubor.
 ### Spuštění na linuxových distribucích založených na debianu
 #### Potřebné balíčky
-`sudo apt install git`
-`sudo apt install g++`
-`sudo apt install qt5-default`
-`sudo apt install make`
+`sudo apt install git` <br/>
+`sudo apt install g++` <br/>
+`sudo apt install qt5-default` <br/>
+`sudo apt install make` <br/>
 
 #### Naklonování projektu
-`git clone https://github.com/martinnovaak/K-means`
-`cd K-means`
-`rm -r program` 
-`cd source`
+`git clone https://github.com/martinnovaak/K-means` <br/>
+`cd K-means` <br/>
+`rm -r program`  <br/>
+`cd source` <br/>
 
-`qmake Plot.pro`
-`make`
-`./Plot`
+#### Spuštění
+`qmake Plot.pro` <br/>
+`make` <br/>
+`./Plot` <br/>
 
 ## Oprava chyb
 ### Defaultní konstruktor
