@@ -14,6 +14,7 @@ private:
                                             //funkci pridejDoShluku, po zavolani funkce novyCentroid se vydeli poctem bodu ve skluku)
     friend class MainWindow;
 public:
+    Centroid();
     Centroid(const double * bod, unsigned int dim);//konstruktor
     Centroid(const Centroid & c);           //kopirovaci konstruktor
     ~Centroid();                            //destruktor

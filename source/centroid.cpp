@@ -1,5 +1,10 @@
 #include "centroid.h"
 
+Centroid::Centroid() : Bod()
+{
+
+}
+
 Centroid::Centroid(const double *bod, unsigned int dim) : Bod(bod, dim)
 {
     this->pocet = 0;

@@ -1,6 +1,11 @@
 #include "bod.h"
 #include <QMessageBox>
 
+Bod::Bod()
+{
+
+}
+
 Bod::Bod(const double *bod, unsigned int dim)
 {
     this->dim = dim;

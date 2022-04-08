@@ -10,6 +10,7 @@ protected:
     double * souradnice; // souradnice bodu
     unsigned int dim;    // dimenze
 public:
+    Bod();
     Bod(const double * bod, unsigned int dim);    //konstruktor
     Bod(const Bod& b);                      //kopirovaci konstruktor
     ~Bod();                                 //destruktor
