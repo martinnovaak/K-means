@@ -333,7 +333,7 @@ struct Edge * VoronoiDiagramGenerator::bisect(struct Site *s1,struct	Site *s2)
 }
 
 //create a new site where the HalfEdges el1 and el2 intersect - note that the Point in the argument list is not used, don't know why it's there
-struct Site * VoronoiDiagramGenerator::intersect(struct Halfedge *el1, struct Halfedge *el2, struct Point *p)
+struct Site * VoronoiDiagramGenerator::intersect(struct Halfedge *el1, struct Halfedge *el2, struct Point *)
 {
 	struct	Edge *e1,*e2, *e;
 	struct  Halfedge *el;
@@ -389,8 +389,10 @@ int VoronoiDiagramGenerator::right_of(struct Halfedge *el,struct Point *p)
 	struct Site *topsite;
 	int right_of_site, above, fast;
 	float dxp, dyp, dxs, t1, t2, t3, yl;
-	
-	e = el -> ELedge;
+
+    if(el != nullptr)
+    {
+    e = el->ELedge;
 	topsite = e -> reg[1];
 	right_of_site = p -> x > topsite -> coord.x;
 	if(right_of_site && el -> ELpm == le) return(1);
@@ -424,6 +426,8 @@ int VoronoiDiagramGenerator::right_of(struct Halfedge *el,struct Point *p)
 	above = t1*t1 > t2*t2 + t3*t3;
 	};
 	return (el->ELpm==le ? above : !above);
+    }
+    return -1;
 }
 
 
@@ -455,7 +459,6 @@ void VoronoiDiagramGenerator::makevertex(struct Site *v)
 {
 	v -> sitenbr = nvertices;
 	nvertices += 1;
-	out_vertex(v);
 }
 
 
@@ -593,8 +596,11 @@ char * VoronoiDiagramGenerator::getfree(struct Freelist *fl)
 		for(i=0; i<sqrt_nsites; i+=1) 	
 			makefree((struct Freenode *)((char *)t+i*fl->nodesize), fl);		
 	};
-	t = fl -> head;
-	fl -> head = (fl -> head) -> nextfree;
+    if (fl->head != nullptr)
+    {
+        t = fl -> head;
+        fl -> head = (fl -> head) -> nextfree;
+    }
 	return((char *)t);
 }
 
@@ -616,7 +622,7 @@ void VoronoiDiagramGenerator::cleanup()
 
 	FreeNodeArrayList* current=0, *prev = 0;
 
-	current = prev = allMemoryList;
+    current = allMemoryList;
 
 	while(current->next != 0)
 	{
@@ -642,7 +648,7 @@ void VoronoiDiagramGenerator::cleanup()
 void VoronoiDiagramGenerator::cleanupEdges()
 {
 	GraphEdge* geCurrent = 0, *gePrev = 0;
-	geCurrent = gePrev = allEdges;
+    geCurrent = allEdges;
 
 	while(geCurrent != 0 && geCurrent->next != 0)
 	{
@@ -684,44 +690,6 @@ void VoronoiDiagramGenerator::line(float x1, float y1, float x2, float y2)
 	pushGraphEdge(x1,y1,x2,y2);
 
 }
-void VoronoiDiagramGenerator::circle(float x, float y, float radius){}
-void VoronoiDiagramGenerator::range(float minX, float minY, float maxX, float maxY){}
-
-
-
-void VoronoiDiagramGenerator::out_bisector(struct Edge *e)
-{
-	
-
-}
-
-
-void VoronoiDiagramGenerator::out_ep(struct Edge *e)
-{
-	
-	
-}
-
-void VoronoiDiagramGenerator::out_vertex(struct Site *v)
-{
-	
-}
-
-
-void VoronoiDiagramGenerator::out_site(struct Site *s)
-{
-	if(!triangulate & plot & !debug)
-		circle (s->coord.x, s->coord.y, cradius);
-	
-}
-
-
-void VoronoiDiagramGenerator::out_triple(struct Site *s1, struct Site *s2,struct Site * s3)
-{
-	
-}
-
-
 
 void VoronoiDiagramGenerator::plotinit()
 {
@@ -736,14 +704,13 @@ void VoronoiDiagramGenerator::plotinit()
 	pymax = (float)(ymax + (d-dy)/2.0);
 	cradius = (float)((pxmax - pxmin)/350.0);
 	openpl();
-	range(pxmin, pymin, pxmax, pymax);
 }
 
 
 void VoronoiDiagramGenerator::clip_line(struct Edge *e)
 {
 	struct Site *s1, *s2;
-	float x1=0,x2=0,y1=0,y2=0, temp = 0;;
+    float x1=0,x2=0,y1=0,y2=0;
 
 	x1 = e->reg[0]->coord.x;
 	x2 = e->reg[1]->coord.x;
@@ -858,7 +825,7 @@ deltax, deltay (can all be estimates).
 Performance suffers if they are wrong; better to make nsites,
 deltax, and deltay too big than too small.  (?) */
 
-bool VoronoiDiagramGenerator::voronoi(int triangulate)
+bool VoronoiDiagramGenerator::voronoi(int)
 {
 	struct Site *newsite, *bot, *top, *temp, *p;
 	struct Site *v;
@@ -869,7 +836,6 @@ bool VoronoiDiagramGenerator::voronoi(int triangulate)
 	
 	PQinitialize();
 	bottomsite = nextone();
-	out_site(bottomsite);
 	bool retval = ELinitialize();
 
 	if(!retval)
@@ -888,7 +854,6 @@ bool VoronoiDiagramGenerator::voronoi(int triangulate)
 		if (newsite != (struct Site *)NULL 	&& (PQempty() || newsite -> coord.y < newintstar.y
 			|| (newsite->coord.y == newintstar.y && newsite->coord.x < newintstar.x)))
 		{/* new site is smallest - this is a site event*/
-			out_site(newsite);						//output the site
 			lbnd = ELleftbnd(&(newsite->coord));				//get the first HalfEdge to the LEFT of the new site
 			rbnd = ELright(lbnd);						//get the first HalfEdge to the RIGHT of the new site
 			bot = rightreg(lbnd);						//if this halfedge has no edge, , bot = bottom site (whatever that is)
@@ -919,8 +884,6 @@ bool VoronoiDiagramGenerator::voronoi(int triangulate)
 			rrbnd = ELright(rbnd);						//get the HalfEdge to the right of the HE to the right of the lowest HE 
 			bot = leftreg(lbnd);						//get the Site to the left of the left HE which it bisects
 			top = rightreg(rbnd);						//get the Site to the right of the right HE which it bisects
-
-			out_triple(bot, top, rightreg(lbnd));		//output the triple of sites, stating that a circle goes through them
 
 			v = lbnd->vertex;						//get the vertex that caused this event
 			makevertex(v);							//set the vertex number - couldn't do this earlier since we didn't know when it would be processed

@@ -168,7 +168,6 @@ private:
 	struct Halfedge *ELleftbnd(struct Point *p);
 	struct Halfedge *ELright(struct Halfedge *he);
 	void makevertex(struct Site *v);
-	void out_triple(struct Site *s1, struct Site *s2,struct Site * s3);
 
 	void PQinsert(struct Halfedge *he,struct Site * v, float offset);
 	void PQdelete(struct Halfedge *he);
@@ -189,16 +188,12 @@ private:
 	float dist(struct Site *s,struct Site *t);
 	struct Site *intersect(struct Halfedge *el1, struct Halfedge *el2, struct Point *p=0);
 
-	void out_bisector(struct Edge *e);
-	void out_ep(struct Edge *e);
-	void out_vertex(struct Site *v);
 	struct Site *nextone();
 
 	void pushGraphEdge(float x1, float y1, float x2, float y2);
 
     void openpl();
     void line(float x1, float y1, float x2, float y2);
-    void circle(float x, float y, float radius);
     void range(float minX, float minY, float maxX, float maxY);
 
 
