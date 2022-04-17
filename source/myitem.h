@@ -8,6 +8,7 @@
 class myitem : public QObject, public QGraphicsItem
 {
     Q_OBJECT
+    Q_INTERFACES(QGraphicsItem)          // dokud jsem toto nepřidal program hazel warning:  "Class myitem implements the interface QGraphicsItem but does not list it in Q_INTERFACES. qobject_cast to QGraphicsItem will not work!"
 private:
     double souradnice_x;                 // x-ova souradnice pro inicializaci
     double souradnice_y;                 // y-ova souradnice pro inicializaci
@@ -44,7 +45,7 @@ private:
 // metody na interakci itemu s mysi
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent*) override;                       // zmacknuti mysi
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent*) override;                     // pusteni mysi
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent*) override;                     // pusteni mysi        
 //signaly
 signals:
     void itemReleased();    //signal vysilajici informaci ze item byl pusten mysi

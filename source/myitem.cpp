@@ -1,5 +1,6 @@
 #include "myitem.h"
 #include <QToolTip>
+#include <QGraphicsScene>
 
 myitem::myitem(double x, double y, double wh, Qt::GlobalColor color)
 {
@@ -44,33 +45,32 @@ QVariant myitem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (change == ItemPositionChange && scene()) //zmenila-li se pozice
     {
-          // ve value je ulozena hodnota noveho leveho horniho rohu itemu
-          QPointF newPos = value.toPointF();
-          zx = souradnice_x + newPos.x();
-          zy = souradnice_y + newPos.y();
-          setToolTip(QString::number(zx) + " " + QString::number(zy)); //zmena tooltipu na novou pozici
-          moveLineToCenter(); //presun linku na novy stred itemu
+        // ve value je ulozena hodnota noveho leveho horniho rohu itemu
+        QPointF newPos = value.toPointF();
+        zx = souradnice_x + newPos.x();
+        zy = souradnice_y + newPos.y();
+        setToolTip(QString::number(zx) + " " + QString::number(zy)); //zmena tooltipu na novou pozici
+        moveLineToCenter(); //presun linku na novy stred itemu
 
-          emit itemChanged();//zavolej signal
+        emit itemChanged();//zavolej signal
     }
+    this->update();
     return QGraphicsItem::itemChange(change, value); //zavolej metodu predka
 }
 
 //po stisknuti itemu se zmeni jeho barva na magentovou a jeho linky na cervenou
-void myitem::mousePressEvent(QGraphicsSceneMouseEvent *)
+void myitem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-    //1) ulozi aktualni pozici
-    this->souradnice_x = zx;
-    this->souradnice_y = zy;
-    //2) zmeni barvy
+    //1) zmeni barvy
     this->color = Qt::magenta;
     for(int i = 0; i < this->lines.size(); i++)
         lines[i]->setPen(QPen(Qt::red));
     //paint se zavola az pri tazeni - barva se tedy meni pouze pri tazeni itemy po scene
+    QGraphicsItem::mousePressEvent(event);
 }
 
 //po uvolneni itemu se barvy na zpet
-void myitem::mouseReleaseEvent(QGraphicsSceneMouseEvent *)
+void myitem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
     //1) zmeni barvy
     this->color = this->pomColor;
@@ -78,8 +78,8 @@ void myitem::mouseReleaseEvent(QGraphicsSceneMouseEvent *)
         lines[i]->setPen(QPen(Qt::black));
     //2)nakresli znovu item
     this->update(); //po uvolneni uz se paint nevola, je treba zavolat rucne
-
     emit itemReleased(); //zavolej signal
+    QGraphicsItem::mouseReleaseEvent(event);
 }
 
 //linka je mezi dvema body (p1,p2) p1 je vzdy centroid a p2 je vzdy bod
