@@ -658,7 +658,6 @@ void VoronoiDiagramGenerator::cleanupEdges()
 	}
 
 	allEdges = 0;
-
 }
 
 void VoronoiDiagramGenerator::pushGraphEdge(float x1, float y1, float x2, float y2)
@@ -682,9 +681,6 @@ char * VoronoiDiagramGenerator::myalloc(unsigned n)
 }
 
 
-/* for those who don't have Cherry's plot */
-/* #include <plot.h> */
-void VoronoiDiagramGenerator::openpl(){}
 void VoronoiDiagramGenerator::line(float x1, float y1, float x2, float y2)
 {	
 	pushGraphEdge(x1,y1,x2,y2);
@@ -703,7 +699,6 @@ void VoronoiDiagramGenerator::plotinit()
 	pymin = (float)(ymin - (d-dy)/2.0);
 	pymax = (float)(ymax + (d-dy)/2.0);
 	cradius = (float)((pxmax - pxmin)/350.0);
-	openpl();
 }
 
 
@@ -939,7 +934,6 @@ bool VoronoiDiagramGenerator::voronoi(int)
 	cleanup();
 
 	return true;
-	
 }
 
 

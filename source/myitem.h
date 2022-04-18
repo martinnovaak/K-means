@@ -19,6 +19,9 @@ private:
     Qt::GlobalColor pomColor;            // pomocná proměnná, ve ktere je ulozena hodnota barvy z konstruktoru
     QVector<QGraphicsLineItem *> lines;  // linky pripojene k itemu (centroid muze mit vice bod max 1)
     bool centroid;                       // boolean rikajici, jestli se jedna o centroid ci ne
+
+    static int w;
+    static int h;
 public:
     myitem(double x, double y, double wh, Qt::GlobalColor color);   // konstruktor
     //gettery a settery
@@ -28,6 +31,8 @@ public:
     double getCenterY(){return zy +wh/2;};// getter na stredovou y-ovou souradnici itemu
     void setX(double x){zx = x;};         // setter na stredovou x-ovou souradnici itemu
     void setY(double y){zy = y;};         // setter na stredovou y-ovou souradnici itemu
+    static void setW(int width) {w = width;};
+    static void setH(int height) {h = height;};
 protected:
 //metody zabyvajici se vykreslovanim itemu
 //overridnute metody pro vykresleni itemu
@@ -42,6 +47,7 @@ protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override; //overridnuta metoda zachytavajici zmenu polohy itemu
 private:
     void moveLineToCenter();    //metoda na zmenu polohy linek
+    void setInfo(QPointF newPos);
 // metody na interakci itemu s mysi
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent*) override;                       // zmacknuti mysi

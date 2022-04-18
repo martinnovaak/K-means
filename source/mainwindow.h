@@ -2,10 +2,9 @@
 #define MAINWINDOW_H
 
 #include "myitem.h"
+#include "kmean.h"
 #include <QMainWindow>
 #include <QGraphicsScene>
-#include "kmean.h"
-
 #include <QGraphicsView>
 #include <QLabel>
 #include <QSpinBox>
@@ -27,6 +26,7 @@ private slots:
     void nastavAktualizace();   //slot reagujici na signaly z radiobuttonu
     void nactiSoubor();
 private:
+    // UI:
     QGraphicsView * graphicsview;
     QLabel * label_body;
     QLabel * label_centroidy;

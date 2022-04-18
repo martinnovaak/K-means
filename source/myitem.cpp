@@ -47,15 +47,37 @@ QVariant myitem::itemChange(GraphicsItemChange change, const QVariant &value)
     {
         // ve value je ulozena hodnota noveho leveho horniho rohu itemu
         QPointF newPos = value.toPointF();
-        zx = souradnice_x + newPos.x();
-        zy = souradnice_y + newPos.y();
-        setToolTip(QString::number(zx) + " " + QString::number(zy)); //zmena tooltipu na novou pozici
-        moveLineToCenter(); //presun linku na novy stred itemu
-
-        emit itemChanged();//zavolej signal
+        double nx = souradnice_x + newPos.x();
+        double ny = souradnice_y + newPos.y();
+        bool mimo = false;
+        if (nx < 10)
+        {
+            newPos.setX(10-souradnice_x);
+            setInfo(newPos);
+            mimo = true;
+        }
+        if(ny < 5)
+        {
+            newPos.setY(5-souradnice_y);
+            setInfo(newPos);
+            mimo = true;
+        }
+        if (mimo)
+            return newPos;
+        setInfo(newPos);
     }
     this->update();
     return QGraphicsItem::itemChange(change, value); //zavolej metodu predka
+}
+
+
+void myitem::setInfo(QPointF newPos)
+{
+    zx = souradnice_x + newPos.x();
+    zy = souradnice_y + newPos.y();
+    setToolTip(QString::number(zx) + " " + QString::number(zy)); //zmena tooltipu na novou pozici
+    moveLineToCenter(); //presun linku na novy stred itemu
+    emit itemChanged();//zavolej signal
 }
 
 //po stisknuti itemu se zmeni jeho barva na magentovou a jeho linky na cervenou

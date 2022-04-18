@@ -10,11 +10,10 @@
 #include <QHBoxLayout>
 #include <QSpacerItem>
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent)  : QMainWindow(parent)
     ,velikostBodu(10), pocetBodu(50), pocetCentroidu(5)
 {
-
+    setWindowTitle("K-means - Shlukování metodou nejbližších středů");
     scena = new QGraphicsScene(this);
     vytvor_ui();
 
@@ -72,8 +71,8 @@ void MainWindow::vygeneruj(bool p) //je-li p == true generuje body jinak centroi
     double w,h;
     QRandomGenerator g;
 
-    std::uniform_real_distribution<double> x(velikostBodu/2,sirkaPlatna-velikostBodu/2);
-    std::uniform_real_distribution<double> y(velikostBodu/2,vyskaPlatna-velikostBodu/2);
+    std::uniform_real_distribution<double> x(velikostBodu,sirkaPlatna-velikostBodu);
+    std::uniform_real_distribution<double> y(velikostBodu,vyskaPlatna-velikostBodu);
 
     unsigned int number = (p == true) ? pocetBodu : pocetCentroidu;
 
@@ -200,6 +199,8 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
     this->sirkaPlatna = platno.width();
     this->vyskaPlatna = platno.height();
+    //myitem::setH(vyskaPlatna);
+    //myitem::setW(sirkaPlatna);
     this->scena->update();
 }
 
@@ -393,6 +394,7 @@ void MainWindow::vytvor_ui()
     radio_buttony->addWidget(radiobutton_vypocti_po);
     radio_buttony->addWidget(radiobutton_vypocti_pri);
     radio_buttony->addWidget(radiobutton_nepocti_auto);
+    radio_buttony->addStretch();
     this->radiobutton_nepocti_auto->setChecked(true);
 
     layout->addLayout(fcni_tlacitka);
