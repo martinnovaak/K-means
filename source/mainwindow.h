@@ -6,10 +6,11 @@
 #include <QGraphicsScene>
 #include "kmean.h"
 
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
+#include <QGraphicsView>
+#include <QLabel>
+#include <QSpinBox>
+#include <QPushButton>
+#include <QRadioButton>
 
 class MainWindow : public QMainWindow
 {
@@ -26,7 +27,22 @@ private slots:
     void nastavAktualizace();   //slot reagujici na signaly z radiobuttonu
     void nactiSoubor();
 private:
-    Ui::MainWindow *ui;
+    QGraphicsView * graphicsview;
+    QLabel * label_body;
+    QLabel * label_centroidy;
+    QSpinBox * spinbox_body;
+    QSpinBox * spinbox_centroidy;
+    QPushButton * button_vygeneruj_body;
+    QPushButton * button_vygeneruj_centroidy;
+    QPushButton * button_vypocti;
+
+    QRadioButton * radiobutton_vypocti_po; // vypocti po presunuti
+    QRadioButton * radiobutton_vypocti_pri;
+    QRadioButton * radiobutton_nepocti_auto; // nepocitej automaticky
+
+
+    void vytvor_ui();
+
     QGraphicsScene * scena;     //platno
     QVector<myitem *> body;     //vektor bodu
     QVector<myitem *> centroidy;//vektor centroidu
@@ -55,5 +71,7 @@ private:
     void voronoi();       //funkce na vykresleni hranic voroneho bunek
 
     void ulozBodyDoVektoru(QVector<Centroid> &centroidy, QVector<Bod> &body); //ulozi body do vektoru (predela QVector<myitem*> na QVector<Bod>)
+
+    void resizeEvent(QResizeEvent* event);
 };
 #endif // MAINWINDOW_H

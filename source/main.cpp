@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include "kmean.h"
+#include <iostream>
 
 int main(int argc, char *argv[])
 {

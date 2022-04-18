@@ -12,9 +12,9 @@ protected:
 public:
     Bod();
     Bod(const double * bod, unsigned int dim);    //konstruktor
-    Bod(const Bod& b);                      //kopirovaci konstruktor
-    ~Bod();                                 //destruktor
-    double operator[](unsigned int i) const;//pretizeny operator[] vraci i-tou souradnici
+    Bod(const Bod& b);                          //kopirovaci konstruktor
+    ~Bod();                                     //destruktor
+    double operator[](unsigned int i) const;    //pretizeny operator[] vraci i-tou souradnici
 };
 
 #endif // BOD_H

@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include <QRandomGenerator>
 #include "VoronoiDiagramGenerator.h"
 #include <QFile>
@@ -7,42 +6,49 @@
 #include <QMessageBox>
 #include <QTextStream>
 
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QSpacerItem>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow),velikostBodu(10), sirkaPlatna(759-velikostBodu/2), vyskaPlatna(469-velikostBodu/2)
-    , pocetBodu(50), pocetCentroidu(5)
+    ,velikostBodu(10), pocetBodu(50), pocetCentroidu(5)
 {
-    ui->setupUi(this);
-    this->setFixedSize(804, 619);
+
+    scena = new QGraphicsScene(this);
+    vytvor_ui();
 
     //zakaz aktualizovat
     this->povolitAktualizaci = false;
     this->rezimAktualizace = 0;
 
     //vytvor scenu
-    scena = new QGraphicsScene(this);
-    ui->graphicsView->setScene(scena);
-    scena->setSceneRect(0,0,sirkaPlatna,vyskaPlatna);
+    //scena = new QGraphicsScene(this);
+    //ui->graphicsView->setScene(scena);
+    QRect platno = this->graphicsview->rect();
+    sirkaPlatna = platno.width();
+    vyskaPlatna = platno.height();
+    scena->setSceneRect(platno.x(),platno.y(), platno.width(), platno.height());
     //vygeneruj body a centroidy
     vygeneruj(true);
     vygeneruj(false);
 
     //napojeni signalu z tlacitek na sloty
-    connect(ui->solveButton, &QPushButton::clicked, this, &MainWindow::vyres);
-    connect(ui->pointButton, &QPushButton::clicked, this, &MainWindow::vygenerujBody);
-    connect(ui->centroidButton, &QPushButton::clicked, this, &MainWindow::vygenerujCentroidy);
+    connect(button_vypocti, &QPushButton::clicked, this, &MainWindow::vyres);
+    connect(button_vygeneruj_body, &QPushButton::clicked, this, &MainWindow::vygenerujBody);
+    connect(button_vygeneruj_centroidy, &QPushButton::clicked, this, &MainWindow::vygenerujCentroidy);
 
     //napojeni signalu z radiobuttonu
-    connect(ui->radioButton, &QRadioButton::clicked, this, &MainWindow::nastavAktualizace);
-    connect(ui->radioButton_2, &QRadioButton::clicked, this, &MainWindow::nastavAktualizace);
-    connect(ui->radioButton_3, &QRadioButton::clicked, this, &MainWindow::nastavAktualizace);
+    connect(radiobutton_vypocti_po, &QRadioButton::clicked, this, &MainWindow::nastavAktualizace);
+    connect(radiobutton_vypocti_pri, &QRadioButton::clicked, this, &MainWindow::nastavAktualizace);
+    connect(radiobutton_nepocti_auto, &QRadioButton::clicked, this, &MainWindow::nastavAktualizace);
 
-    connect(ui->akceNacist, &QAction::triggered, this, &MainWindow::nactiSoubor);
+    //connect(ui->akceNacist, &QAction::triggered, this, &MainWindow::nactiSoubor);
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+    //delete ui;
 
     for(int i = 0; i < body.size(); i++)
         delete body.takeAt(i);
@@ -66,8 +72,8 @@ void MainWindow::vygeneruj(bool p) //je-li p == true generuje body jinak centroi
     double w,h;
     QRandomGenerator g;
 
-    std::uniform_real_distribution<double> x(0,sirkaPlatna-velikostBodu/2);
-    std::uniform_real_distribution<double> y(0,vyskaPlatna-velikostBodu/2);
+    std::uniform_real_distribution<double> x(velikostBodu/2,sirkaPlatna-velikostBodu/2);
+    std::uniform_real_distribution<double> y(velikostBodu/2,vyskaPlatna-velikostBodu/2);
 
     unsigned int number = (p == true) ? pocetBodu : pocetCentroidu;
 
@@ -180,11 +186,21 @@ void MainWindow::ulozBodyDoVektoru(QVector<Centroid> &c, QVector<Bod> &b)
         c.push_back(Centroid(point, 2));
         centroid->deleteLines();
     }
-    //for (int i = 0; i < centroidy.length(); i++)
-    //    delete centroidy.takeAt(i);
     for (myitem * centroid : qAsConst(centroidy)) delete centroid;
 
     delete[] point;
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    QMainWindow::resizeEvent(event);
+    QRect platno = this->graphicsview->rect();
+
+    this->scena->setSceneRect(platno.x()+10,platno.y()+10, platno.width()-5,platno.height()-15);
+
+    this->sirkaPlatna = platno.width();
+    this->vyskaPlatna = platno.height();
+    this->scena->update();
 }
 
 //vygeneruje nove body (nejprve smaze ty stare a vygeneruje nove)
@@ -192,7 +208,7 @@ void MainWindow::vygenerujBody()
 {
     povolitAktualizaci = false; // zakaz aktualizace
     smazBody(true);
-    this->pocetBodu = ui->spinBox->value();
+    this->pocetBodu = this->spinbox_body->value();
     vygeneruj(true);
     smazLinky();
     this->scena->update();
@@ -203,7 +219,7 @@ void MainWindow::vygenerujCentroidy()
 {
     povolitAktualizaci = false; // zakaz aktualizace
     smazBody(false);
-    this->pocetCentroidu = ui->spinBox_2->value();
+    this->pocetCentroidu = this->spinbox_centroidy->value();
     vygeneruj(false);
     smazLinky();
     this->scena->update();
@@ -263,9 +279,9 @@ void MainWindow::aktualizuj(bool itemreleased)
 //slot volan po emitnuti signalu z radiobuttonu
 void MainWindow::nastavAktualizace()
 {
-    if(ui->radioButton->isChecked())
+    if(radiobutton_vypocti_po->isChecked())
         this->rezimAktualizace = 1;
-    else if(ui->radioButton_2->isChecked())
+    else if(radiobutton_vypocti_pri->isChecked())
         this->rezimAktualizace = 2;
     else
         this->rezimAktualizace = 0;
@@ -324,8 +340,64 @@ void MainWindow::nactiSoubor()
             index++;
         }
         this->pocetBodu = index;
-        ui->spinBox->setValue(index);
+        this->spinbox_body->setValue(index);
     }
 
     soubor.close();
+}
+
+void MainWindow::vytvor_ui()
+{
+    QWidget * widget = new QWidget;
+    QVBoxLayout * layout = new QVBoxLayout;
+    this->graphicsview = new QGraphicsView(this->scena);
+    this->graphicsview->resize(769,469);
+    this->graphicsview->setMinimumHeight(333);
+    this->graphicsview->setMinimumWidth(547);
+    layout->addWidget(graphicsview);
+
+    QHBoxLayout * fcni_tlacitka = new QHBoxLayout;
+    QHBoxLayout * lo_body = new QHBoxLayout;
+    this->label_body = new QLabel("Počet bodů");
+    this->spinbox_body = new QSpinBox;
+    this->spinbox_body->setMinimum(3);
+    this->spinbox_body->setMaximum(200);
+    this->spinbox_body->setValue(50);
+    this->button_vygeneruj_body = new QPushButton("Vygeneruj Body");
+    lo_body->addWidget(label_body);
+    lo_body->addWidget(spinbox_body);
+    lo_body->addWidget(button_vygeneruj_body);
+
+    QHBoxLayout * lo_centroidy = new QHBoxLayout;
+    this->label_centroidy = new QLabel("Počet centrojdů");
+    this->spinbox_centroidy = new QSpinBox;
+    this->spinbox_centroidy->setMinimum(1);
+    this->spinbox_centroidy->setMaximum(100);
+    this->spinbox_centroidy->setValue(5);
+    this->button_vygeneruj_centroidy = new QPushButton("Vygeneruj centrojdy");
+
+    this->button_vypocti = new QPushButton("Vypočítej");
+    lo_centroidy->addWidget(label_centroidy);
+    lo_centroidy->addWidget(spinbox_centroidy);
+    lo_centroidy->addWidget(button_vygeneruj_centroidy);
+
+    fcni_tlacitka->addLayout(lo_body);
+    fcni_tlacitka->addLayout(lo_centroidy);
+    fcni_tlacitka->addStretch();
+    fcni_tlacitka->addWidget(button_vypocti);
+
+    QHBoxLayout * radio_buttony = new QHBoxLayout;
+    this->radiobutton_vypocti_po = new QRadioButton("Vypočti po přesunutí");
+    this->radiobutton_vypocti_pri = new QRadioButton("Vypočti při přesunování");
+    this->radiobutton_nepocti_auto = new QRadioButton("Nepočítat automaticky");
+    radio_buttony->addWidget(radiobutton_vypocti_po);
+    radio_buttony->addWidget(radiobutton_vypocti_pri);
+    radio_buttony->addWidget(radiobutton_nepocti_auto);
+    this->radiobutton_nepocti_auto->setChecked(true);
+
+    layout->addLayout(fcni_tlacitka);
+    layout->addLayout(radio_buttony);
+
+    widget->setLayout(layout);
+    this->setCentralWidget(widget);
 }
