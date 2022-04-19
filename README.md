@@ -33,6 +33,8 @@ V levém horním rohu aplikace se nachází menubar s akcí pro načtení bodů 
 `qmake Plot.pro` <br/>
 `mingw32-make` <br/>
 
+Více viz [Qt dokumentace](https://wiki.qt.io/Build_Standalone_Qt_Application_for_Windows#Using_MinGW_2) 
+
 Ve složce release se nachází spustitelný .exe soubor
 
 ### Spuštění na linuxových distribucích založených na debianu
