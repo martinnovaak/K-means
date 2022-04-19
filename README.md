@@ -28,7 +28,6 @@ V levém horním rohu aplikace se nachází menubar s akcí pro načtení bodů 
 #### MinGW shell:
 `git clone https://github.com/martinnovaak/K-means.git` <br/>
 `cd K-means` <br/>
-`cd source` <br/>
 
 `qmake Plot.pro` <br/>
 `mingw32-make` <br/>
@@ -47,7 +46,6 @@ Ve složce release se nachází spustitelný .exe soubor
 #### Naklonování projektu
 `git clone https://github.com/martinnovaak/K-means.git` <br/>
 `cd K-means` <br/>
-`cd source` <br/>
 
 #### Spuštění
 `qmake Plot.pro` <br/>
