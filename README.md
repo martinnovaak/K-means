@@ -33,7 +33,7 @@ Ve složce program se nachází spustitelný .exe soubor.
 `sudo apt install make` <br/>
 
 #### Naklonování projektu
-`git clone https://github.com/martinnovaak/K-means` <br/>
+`git clone https://github.com/martinnovaak/K-means.git` <br/>
 `cd K-means` <br/>
 `rm -r program`  <br/>
 `cd source` <br/>
