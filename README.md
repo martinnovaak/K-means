@@ -24,7 +24,17 @@ V levém horním rohu aplikace se nachází menubar s akcí pro načtení bodů 
 
 ## Spuštění
 ## Spuštění na Windows
-Ve složce program se nachází spustitelný .exe soubor.
+<strike> Ve složce program se nachází spustitelný .exe soubor. </strike>
+#### MinGW shell:
+`git clone https://github.com/martinnovaak/K-means.git` <br/>
+`cd K-means` <br/>
+`cd source` <br/>
+
+`qmake Plot.pro` <br/>
+`mingw32-make` <br/>
+
+Ve složce release se nachází spustitelný .exe soubor
+
 ### Spuštění na linuxových distribucích založených na debianu
 #### Potřebné balíčky
 `sudo apt install git` <br/>
@@ -35,7 +45,6 @@ Ve složce program se nachází spustitelný .exe soubor.
 #### Naklonování projektu
 `git clone https://github.com/martinnovaak/K-means.git` <br/>
 `cd K-means` <br/>
-`rm -r program`  <br/>
 `cd source` <br/>
 
 #### Spuštění
