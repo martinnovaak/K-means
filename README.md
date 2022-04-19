@@ -16,9 +16,9 @@ Pro vytvoření instance třídy KMean je potřeba mít vektory centroidů a bod
 
 ## Grafické uživatelské rozhraní
 Program se skládá z okna o velikosti 759x469 pixelů. Aplikace se skládá z plátna (QGraphicsView) o velikosti 759 x 469 pixelů. Pod plátnem se nachází spinboxy, na kterých se dá nastavit námi požadovaný počet centroidů a bodů. Body se dají dále vygenerovat po stisknutí příslušného tlačítka. Body i Centroidy si pomocí myši můžeme přesunout na námi chtěnou pozici. Body při přesunu mění barvu na magentovou po jejich puštění se jim barva vrátí na původní.
-Celá úloha Shlukování metodou nejbližšícch středů se dá vypočítat a nakreslit stisknutím tlačítka `Vypočti`. Vykreslí se shluky, všechny body budou černou linkou jsou se svým centroidem. Modrými linkami jsou znázorněny hranice Voroného buněk. 
+Celá úloha Shlukování metodou nejbližšícch středů se dá vypočítat a nakreslit stisknutím tlačítka `Vypočti`. Vykreslí se shluky, všechny body budou černou linkou se svým centroidem. Modrými linkami jsou znázorněny hranice Voroného buněk. 
 
-Na nejnižším řádku aplikace se nacházejí 3 radiobuttony. Na nich si může uživatel navolit zda-li chce volat výpočet metody při puštění bodu či jeho přesouvání. Příslušné linky daného bodu při jeho přesouvání mění barvu na červenou. Po jejich puštění zpět na černou.
+Na nejnižším řádku aplikace se nacházejí 3 radiobuttony. Na nich si může uživatel navolit, zda-li chce volat výpočet metody při puštění bodu či jeho přesouvání. Příslušné linky daného bodu při jeho přesouvání mění barvu na červenou. Po jejich puštění zpět na černou.
 
 V levém horním rohu aplikace se nachází menubar s akcí pro načtení bodů ze souboru formátu .txt. Data by měly být zapsány podobně jako v souboru testdata.txt.
 
