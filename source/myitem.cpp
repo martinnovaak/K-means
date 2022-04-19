@@ -65,6 +65,7 @@ QVariant myitem::itemChange(GraphicsItemChange change, const QVariant &value)
         if (mimo)
             return newPos;
         setInfo(newPos);
+        this->scene()->update();
     }
     this->update();
     return QGraphicsItem::itemChange(change, value); //zavolej metodu predka
@@ -99,9 +100,9 @@ void myitem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
     for(int i = 0; i < this->lines.size(); i++)
         lines[i]->setPen(QPen(Qt::black));
     //2)nakresli znovu item
-    this->update(); //po uvolneni uz se paint nevola, je treba zavolat rucne
     QGraphicsItem::mouseReleaseEvent(event);
     emit itemReleased(); //zavolej signal
+    this->update(); //po uvolneni uz se paint nevola, je treba zavolat rucne
 }
 
 //linka je mezi dvema body (p1,p2) p1 je vzdy centroid a p2 je vzdy bod

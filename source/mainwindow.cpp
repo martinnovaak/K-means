@@ -10,6 +10,8 @@
 #include <QHBoxLayout>
 #include <QSpacerItem>
 
+#include <QMenuBar>
+
 MainWindow::MainWindow(QWidget *parent)  : QMainWindow(parent)
     ,velikostBodu(10), pocetBodu(50), pocetCentroidu(5)
 {
@@ -42,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent)  : QMainWindow(parent)
     connect(radiobutton_vypocti_pri, &QRadioButton::clicked, this, &MainWindow::nastavAktualizace);
     connect(radiobutton_nepocti_auto, &QRadioButton::clicked, this, &MainWindow::nastavAktualizace);
 
-    //connect(ui->akceNacist, &QAction::triggered, this, &MainWindow::nactiSoubor);
+    connect(akceNacti, &QAction::triggered, this, &MainWindow::nactiSoubor);
 }
 
 MainWindow::~MainWindow()
@@ -199,8 +201,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
     this->sirkaPlatna = platno.width();
     this->vyskaPlatna = platno.height();
-    //myitem::setH(vyskaPlatna);
-    //myitem::setW(sirkaPlatna);
+
     this->scena->update();
 }
 
@@ -343,12 +344,15 @@ void MainWindow::nactiSoubor()
         this->pocetBodu = index;
         this->spinbox_body->setValue(index);
     }
-
     soubor.close();
+    this->scena->update();
 }
 
 void MainWindow::vytvor_ui()
-{
+{  
+    akceNacti = new QAction("Načti soubor");
+    this->menuBar()->addAction(akceNacti);
+
     QWidget * widget = new QWidget;
     QVBoxLayout * layout = new QVBoxLayout;
     this->graphicsview = new QGraphicsView(this->scena);

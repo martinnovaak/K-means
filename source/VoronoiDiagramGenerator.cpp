@@ -846,8 +846,7 @@ bool VoronoiDiagramGenerator::voronoi(int)
 		//if the lowest site has a smaller y value than the lowest vector intersection, process the site
 		//otherwise process the vector intersection		
 
-		if (newsite != (struct Site *)NULL 	&& (PQempty() || newsite -> coord.y < newintstar.y
-			|| (newsite->coord.y == newintstar.y && newsite->coord.x < newintstar.x)))
+        if (newsite != (struct Site *)NULL 	&& (PQempty() || newsite -> coord.y < newintstar.y || (newsite->coord.y == newintstar.y && newsite->coord.x < newintstar.x)))
 		{/* new site is smallest - this is a site event*/
 			lbnd = ELleftbnd(&(newsite->coord));				//get the first HalfEdge to the LEFT of the new site
 			rbnd = ELright(lbnd);						//get the first HalfEdge to the RIGHT of the new site

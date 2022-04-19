@@ -10,6 +10,7 @@
 #include <QSpinBox>
 #include <QPushButton>
 #include <QRadioButton>
+#include <QAction>
 
 class MainWindow : public QMainWindow
 {
@@ -27,6 +28,8 @@ private slots:
     void nactiSoubor();
 private:
     // UI:
+    QAction * akceNacti;
+
     QGraphicsView * graphicsview;
     QLabel * label_body;
     QLabel * label_centroidy;
