@@ -51,4 +51,4 @@ Do tříd Centroid a Bod byl přidán prázdný defaultní konstruktor pro kompa
 Ve verzi Qt6 vznikali při vykreslování bílé horizontální šmouhy, kde se nevykreslovaly body ani Voroneho linky. Vyřešeno aktualizací plátna po každém vykreslení.
 
 ### Warningy ve třídě VoronoiDiagramGenerator
-Bylo opraveno absolutní minimum pro to, aby se ve třídě nevyskytovaly žádné upozornění. (Ve třídě se stále nachází podle mě nevyužívané funkce.)
+Bylo opraveno absolutní minimum pro to, aby se ve třídě nevyskytovaly žádné (v Qt6 se žádné nevyskytují) upozornění. (Ve třídě se stále nachází podle mě nevyužívané funkce.)
