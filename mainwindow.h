@@ -26,9 +26,11 @@ private slots:
     void aktualizuj(bool itemreleased); //slot reagujici na signaly z myitemu
     void nastavAktualizace();   //slot reagujici na signaly z radiobuttonu
     void nactiSoubor();
+    void nastav();
 private:
     // UI:
     QAction * akceNacti;
+    QAction * akceNastaveni;
 
     QGraphicsView * graphicsview;
     QLabel * label_body;
@@ -53,6 +55,7 @@ private:
     QVector<QGraphicsLineItem *> hraniceVoronehoBunek; //vektor linek tvorici hranice voroneho bunek
 
     unsigned int velikostBodu;     //velikost bodu na platne
+    unsigned int velikostCentroidu;//velikost centroidu na platne
 
     unsigned int sirkaPlatna;    //sirka platna (QGraphicsView)
     unsigned int vyskaPlatna;    //vyska platna (QGraphicsView)

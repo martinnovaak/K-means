@@ -12,6 +12,7 @@ SOURCES += \
     VoronoiDiagramGenerator.cpp \
     bod.cpp \
     centroid.cpp \
+    dialog.cpp \
     kmean.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -21,6 +22,7 @@ HEADERS += \
     VoronoiDiagramGenerator.h \
     bod.h \
     centroid.h \
+    dialog.h \
     kmean.h \
     mainwindow.h \
     myitem.h

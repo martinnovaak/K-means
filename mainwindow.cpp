@@ -11,9 +11,10 @@
 #include <QSpacerItem>
 
 #include <QMenuBar>
+#include "dialog.h"
 
 MainWindow::MainWindow(QWidget *parent)  : QMainWindow(parent)
-    ,velikostBodu(10), pocetBodu(50), pocetCentroidu(5)
+    ,velikostBodu(10), velikostCentroidu(11), pocetBodu(50), pocetCentroidu(5)
 {
     setWindowTitle("K-means - Shlukování metodou nejbližších středů");
     scena = new QGraphicsScene(this);
@@ -45,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent)  : QMainWindow(parent)
     connect(radiobutton_nepocti_auto, &QRadioButton::clicked, this, &MainWindow::nastavAktualizace);
 
     connect(akceNacti, &QAction::triggered, this, &MainWindow::nactiSoubor);
+    connect(akceNastaveni, &QAction::triggered, this, &MainWindow::nastav);
 }
 
 MainWindow::~MainWindow()
@@ -92,7 +94,7 @@ void MainWindow::vygeneruj(bool p) //je-li p == true generuje body jinak centroi
         }
         else
         {
-            el = new myitem(w, h, velikostBodu, Qt::red);
+            el = new myitem(w, h, velikostCentroidu, Qt::red);
             centroidy.push_back(el);
         }
         scena->addItem(el);
@@ -245,7 +247,7 @@ void MainWindow::vyres()
     for (unsigned int i = 0; i < pocetCentroidu; i++)
     {
         //nové centroidy
-        myitem * el = new myitem(kmin(i,0), kmin(i,1), velikostBodu, Qt::red);
+        myitem * el = new myitem(kmin(i,0), kmin(i,1), velikostCentroidu, Qt::red);
         centroidy.push_back(el);
         //nalezne body v aktuálním shluku
         connect(el, &myitem::itemReleased, this, [this]{aktualizuj(true);});
@@ -348,10 +350,22 @@ void MainWindow::nactiSoubor()
     this->scena->update();
 }
 
+void MainWindow::nastav()
+{
+    Dialog * dialog = new Dialog(velikostCentroidu,velikostBodu);
+    if(dialog->exec())
+    {
+        velikostBodu = dialog->getBod();
+        velikostCentroidu = dialog->getCentroid();
+    }
+}
+
 void MainWindow::vytvor_ui()
 {  
     akceNacti = new QAction("Načti soubor");
     this->menuBar()->addAction(akceNacti);
+    akceNastaveni = new QAction("Nastavení");
+    this->menuBar()->addAction(akceNastaveni);
 
     QWidget * widget = new QWidget;
     QVBoxLayout * layout = new QVBoxLayout;
