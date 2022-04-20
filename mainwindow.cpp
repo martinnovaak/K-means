@@ -14,7 +14,7 @@
 #include "dialog.h"
 
 MainWindow::MainWindow(QWidget *parent)  : QMainWindow(parent)
-    ,velikostBodu(10), velikostCentroidu(11), pocetBodu(50), pocetCentroidu(5)
+    ,velikostBodu(10), velikostCentroidu(10), pocetBodu(50), pocetCentroidu(5)
 {
     setWindowTitle("K-means - Shlukování metodou nejbližších středů");
     scena = new QGraphicsScene(this);
@@ -295,7 +295,7 @@ void MainWindow::nastavAktualizace()
 }
 
 void MainWindow::nactiSoubor()
-{
+{   
     QString cestaSouboru;
     QString nazevSouboru = QFileDialog::getOpenFileName(this, "Otevři soubor", cestaSouboru, "Textový soubor (*.txt)");
     QFileInfo i(nazevSouboru);
@@ -308,6 +308,8 @@ void MainWindow::nactiSoubor()
     }
 
     smazBody(true);
+    smazBody(false);
+    smazLinky();
 
     QTextStream in(&soubor);
 
