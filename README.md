@@ -1,9 +1,5 @@
 # K-Means
-Tento projekt obsahuje algoritmus Shlukování metodou nejbližších středů neboli K-Means (soubory kmeans.h, kmeans.cpp, bod.h a bod.cpp). Dále je k projektu udělána grafická aplikace pro znázornění výsledků ve 2D (soubory mainwindow.h, mainwindow.cpp, mainwindow.ui, myitem.h, myitem.cpp). V projektu je dále využit algoritmus pro výpočet hranic Voroneho buněk. Tento algoritmus jsem neprogramoval, ale použil již vytvořenou třídu z [Voronoi Resources](https://web.archive.org/web/20131207065132/http://www.skynet.ie/~sos/mapviewer/voronoi.php) (soubory VoronoiDiagramGenerator.h a VoronoiDiagramGenerator.cpp). Program je napsán v programovacím jazyce C++ a pro grafické rozhraní byla využita knihovna Qt. 
-## Složka program
-<strike> Ve složce program se nachází spustitelný .exe program. Pro jeho spuštění je třeba mít ve stejné složce všechny .dll knihovny, které se v daném složce nachází. </strike>
-## Složka source
-Ve složce source se nachází veškeré zdrojové soubory k programu a testovací soubor testdata.txt.
+Tento projekt obsahuje algoritmus Shlukování metodou nejbližších středů neboli K-Means (soubory kmeans.h, kmeans.cpp, bod.h, bod.cpp, centroid.h a centroid.cpp). Dále je k projektu udělána grafická aplikace pro znázornění výsledků ve 2D (soubory mainwindow.h, mainwindow.cpp, myitem.h, myitem.cpp, dialog.h, dialog.cpp). V projektu je dále využit algoritmus pro výpočet hranic Voroneho buněk. Tento algoritmus jsem neprogramoval, ale použil již vytvořenou třídu z [Voronoi Resources](https://web.archive.org/web/20131207065132/http://www.skynet.ie/~sos/mapviewer/voronoi.php) (soubory VoronoiDiagramGenerator.h a VoronoiDiagramGenerator.cpp). Program je napsán v programovacím jazyce C++ a pro grafické rozhraní byla využita knihovna Qt. 
 ## Třída pro výpočet k-průměrů (k-means) 
 Pro samotný funkční algoritmus jsou potřeba třídy kmeans.h a bod.h s příslušnými kmeans.cpp a bod.cpp. Třída je napsána obecně pro libovolnou dimenzi.
 #### Způsob použití algoritmu
