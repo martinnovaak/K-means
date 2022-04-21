@@ -1,6 +1,6 @@
 #include "kmean.h"
 
-KMean::KMean(QVector<Centroid>& centroidy, QVector<Bod>& body, unsigned int dimenze)
+KMean::KMean(vector<Centroid>& centroidy, vector<Bod>& body, unsigned int dimenze)
     : pocetCentroidu(centroidy.size()),pocetBodu(body.size()),dimenze(dimenze)
 {
     for(unsigned int i = 0; i < pocetCentroidu; i++)

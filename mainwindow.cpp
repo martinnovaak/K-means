@@ -170,7 +170,7 @@ void MainWindow::voronoi()
 }
 
 //predela body z myitem* na bod resp. centroid
-void MainWindow::ulozBodyDoVektoru(QVector<Centroid> &c, QVector<Bod> &b)
+void MainWindow::ulozBodyDoVektoru(vector<Centroid> &c, vector<Bod> &b)
 {
     double * point;
     point = new double[2];
@@ -234,8 +234,8 @@ void MainWindow::vyres()
     povolitAktualizaci = true; // povol aktualizace
 
     //parametry pro inicializaci tridy kmean
-    QVector<Centroid> c;
-    QVector<Bod> b;
+    vector<Centroid> c;
+    vector<Bod> b;
     ulozBodyDoVektoru(c, b);
     centroidy.clear();
 
@@ -251,9 +251,9 @@ void MainWindow::vyres()
         centroidy.push_back(el);
         //nalezne body v aktuálním shluku
         connect(el, &myitem::itemReleased, this, [this]{aktualizuj(true);});
-        for(unsigned int j = 0; j < kmin[i].pocet; j++)
+        for(unsigned int j = 0; j < kmin[i].getPocet(); j++)
         {
-            unsigned int bod = kmin[i].bodyVeShluku[j]; // index bodu ve shluku
+            unsigned int bod = kmin[i].getBodVeShluku(j); // index bodu ve shluku
             QGraphicsLineItem *line = scena->addLine(QLineF(el->getCenterX(),el->getCenterY(),body[bod]->getCenterX(),body[bod]->getCenterY()));
             linky.push_back(line);
             //spojení linky s krajními body (centroidem a bodem)
@@ -263,8 +263,7 @@ void MainWindow::vyres()
         //vlození centroidu na plátno
         scena->addItem(centroidy[i]);
     }
-
-    voronoi();
+    voronoi(); //vykresli Voroneho bunky
     this->scena->update();
 }
 

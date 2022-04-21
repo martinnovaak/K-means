@@ -103,6 +103,7 @@ void myitem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
     QGraphicsItem::mouseReleaseEvent(event);
     emit itemReleased(); //zavolej signal
     this->update(); //po uvolneni uz se paint nevola, je treba zavolat rucne
+    this->scene()->update();
 }
 
 //linka je mezi dvema body (p1,p2) p1 je vzdy centroid a p2 je vzdy bod

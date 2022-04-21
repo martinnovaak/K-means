@@ -7,8 +7,8 @@ using namespace std;
 class KMean
 {
 private:
-    QVector<Centroid> centroidy;
-    QVector<Bod> body;
+    vector<Centroid> centroidy;
+    vector<Bod> body;
 
     unsigned int pocetCentroidu;
     unsigned int pocetBodu;
@@ -22,7 +22,7 @@ private:
     bool vypoctiNoveCentroidy();
     void ulozPozici();
 public:
-    KMean(QVector<Centroid>& centroidy, QVector<Bod>& body, unsigned int dimenze);
+    KMean(vector<Centroid>& centroidy, vector<Bod>& body, unsigned int dimenze);
     void vyres();
     double operator()(unsigned int i, unsigned int j);
     const Centroid & operator[](unsigned int i);

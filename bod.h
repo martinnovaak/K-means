@@ -1,7 +1,8 @@
 #ifndef BOD_H
 #define BOD_H
 
-#include <QVector>
+#include <vector>
+using namespace std;
 
 //Bod v n-te dimenzi obsahuje n souradnic
 class Bod

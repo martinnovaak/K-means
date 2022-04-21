@@ -11,6 +11,7 @@
 #include <QPushButton>
 #include <QRadioButton>
 #include <QAction>
+#include <QVector>
 
 class MainWindow : public QMainWindow
 {
@@ -76,7 +77,7 @@ private:
 
     void voronoi();       //funkce na vykresleni hranic voroneho bunek
 
-    void ulozBodyDoVektoru(QVector<Centroid> &centroidy, QVector<Bod> &body); //ulozi body do vektoru (predela QVector<myitem*> na QVector<Bod>)
+    void ulozBodyDoVektoru(vector<Centroid> &centroidy, vector<Bod> &body); //ulozi body do vektoru (predela QVector<myitem*> na QVector<Bod>)
 
     void resizeEvent(QResizeEvent* event);
 };
