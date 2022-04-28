@@ -71,3 +71,6 @@ Bylo opraveno absolutní minimum pro to, aby se ve třídě nevyskytovaly žádn
 
 ### Načítání dat ze souboru
 Po načtení dat ze souboru již nezůstavají vykreslené staré Voroneho linky.
+
+### Úprava KMeans algoritmu
+Třídy pro výpočet shluků byly upraveny tak, aby nepoužívaly třídy frameworku Qt. Dají se nyní libovolně použít samostatně bez nutnosti užití Qt knihoven.
