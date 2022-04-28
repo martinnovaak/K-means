@@ -57,7 +57,10 @@ Aplikace nemá již pevně vytvořený UI. Veškeré grafické nastavení okna j
 Nově je umožněno měnit velikost aplikace. Po změně velikosti plátna je potřeba vygenerovat body a centroidy znovu.
 
 ### Nastavení velikosti centroidů a bodů
-Ve verzích Qt5 a Qt6 se body vykreslovaly různou velikostí. Přidal jsem do programu dialog pro možnost nastavení vlastní velikosti.
+Ve verzích Qt5 a Qt6 se body vykreslovaly různou velikostí. Přidal jsem do programu dialog pro možnost nastavení vlastní velikosti. Pro použití nové velikosti bodů je potřeba body znovu vygenerovat.
+
+### Úprava KMeans algoritmu
+Třídy pro výpočet shluků byly upraveny tak, aby nepoužívaly třídy frameworku Qt. Dají se nyní libovolně použít samostatně bez nutnosti užití Qt knihoven.
 
 ## Oprava chyb
 ### Defaultní konstruktor
@@ -72,5 +75,3 @@ Bylo opraveno absolutní minimum pro to, aby se ve třídě nevyskytovaly žádn
 ### Načítání dat ze souboru
 Po načtení dat ze souboru již nezůstavají vykreslené staré Voroneho linky.
 
-### Úprava KMeans algoritmu
-Třídy pro výpočet shluků byly upraveny tak, aby nepoužívaly třídy frameworku Qt. Dají se nyní libovolně použít samostatně bez nutnosti užití Qt knihoven.
