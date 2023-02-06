@@ -67,7 +67,7 @@ Třídy pro výpočet shluků byly upraveny tak, aby nepoužívaly třídy frame
 Do tříd Centroid a Bod byl přidán prázdný defaultní konstruktor pro kompatibilitu se staršími verzemi Qt. Před verzí Qt 5.13 vyžadovaly třídy kontejnerů v Qt po objektech defaultní konstruktory viz [Qt dokumentace](https://doc.qt.io/archives/qt-5.12/containers.html#the-container-classes). 
 
 ### Bílé "šmouhy"
-Ve verzi Qt6 vznikali při vykreslování bílé horizontální šmouhy, kde se nevykreslovaly body ani Voroneho linky. Vyřešeno aktualizací plátna po každém vykreslení.
+Ve verzi Qt6 vznikaly při vykreslování bílé horizontální šmouhy, kde se nevykreslovaly body ani Voroneho linky. Vyřešeno aktualizací plátna po každém vykreslení.
 
 ### Warningy ve třídě VoronoiDiagramGenerator
 Bylo opraveno absolutní minimum pro to, aby se ve třídě nevyskytovaly žádné (v Qt6 se žádné nevyskytují) upozornění. (Ve třídě se stále nachází podle mě nevyužívané funkce.)
